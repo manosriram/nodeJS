@@ -1,0 +1,40 @@
+/* html,ul,#divider {
+    background-color: gray;
+} */
+.inpOne {
+    border-radius: 30px;
+}
+#add,#remove {
+    size: 30px;
+}
+.jumbotron {
+    align-self: center;
+}
+#moveAwe {
+    margin-left: 30%;
+}
+button {
+    margin-top: 300%;
+}
+#add {
+    margin-left: 32%;
+}
+#remove,#removeAll {
+    margin-left: 20px;
+}
+
+#add,#remove,#removeAll {
+    margin-top: 3%;
+}
+#moveAwe1 {
+    margin-top: 3%;
+    margin-left: 35%;
+}
+/* .mycheck {
+    margin-right: 6%;
+    display: inline-block;
+} */
+
+#checked {
+    margin-right: 10px;
+}
