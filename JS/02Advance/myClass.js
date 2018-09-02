@@ -27,16 +27,29 @@ class Student {
     }
 }
 
-const student1 = new Student('Arivazhagan','Mano','Sriram',99);
+class anotherStudent extends Student {
+    constructor(firstName,middleName,lastName,credit) {
+        super(firstName,middleName,lastName,credit);
+        console.log("Child Class Consructor has been Called!!");
+    }
+
+    favTech(name) {
+        console.log(`Fav. Tech Person is ${name}`);
+    }
+}
+
+const student1 = new anotherStudent('Arivazhagan','Mano','Sriram',99);
 
 //  let fullName = student1.firstName + student1.lastName;
-
+/*
 console.log(`Full Name of the Student is ${student1.getFullName()}`);
 student1.editName('Steve Jobs');
 console.log(`New Name of the Student is ${student1.getFullName()}`);
 student1.middleNameEdit('Steven Paul Jobs');
 console.log(`New Name of the Student is ${student1.getFullName()}`);
+*/
 
+student1.favTech('Steve Jobs');
 
 
 
