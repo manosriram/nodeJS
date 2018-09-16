@@ -14,7 +14,7 @@ app.get('/', (req, res) => {
 
 app.post('/login', (req, res) => {
     console.log(req.body);
-    // Do some Databse Processing...
+    // Do some Database Processing...
     res.redirect('/');
 });
 
