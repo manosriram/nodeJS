@@ -1,0 +1,27 @@
+#email,#password {
+    width: 20%;
+    height: 500%;
+}
+
+html {
+    background-color: #140951;
+}
+
+.jumbotron {
+    margin-top: 20%;
+}
+
+#email,#password,#submit,#please,#remember,img {
+    margin-left: 400px;
+}
+
+img {
+    width: 10%;
+    margin-left: 450px;
+}
+#submit {
+    margin-left: 470px;
+}
+#please,label {
+    color: white;
+}
