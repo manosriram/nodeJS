@@ -1,10 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
-router.get("/", (req, res) => {
-  res.json({
-    test: "Auth Succesfull.."
-  });
-});
+
+router.get('/', (req, res) => res.json({ test: 'Auth success...' }));
 
 module.exports = router;

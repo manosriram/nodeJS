@@ -1,7 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const bodyparser = require("body-parser");
-const port = 9000;
+const port = process.env.PORT || 3000;
 
 const app = express();
 
@@ -10,14 +10,14 @@ const auth = require("./routes/api/auth");
 
 //Middleware for Express...
 app.use(bodyparser.urlencoded({ extended: false }));
-app.use(bodyparser.json);
+app.use(bodyparser.json());
 
 //mongoDB configuration
 const db = require("./setup/myurl").mongoURL;
 
 //Attempt to connect to database
 mongoose
-  .connect(db)
+  .connect(db, { useNewUrlParser: true })
   .then(() => console.log("MongoDB Connected Successfully..."))
   .catch(error => console.log(error));
 
@@ -28,6 +28,4 @@ app.get("/", (req, res) => {
 //actual routes
 app.use("/api/auth", auth);
 
-app.listen(port, () => {
-  console.log(`Serving Running at ${port}`);
-});
+app.listen(port);
