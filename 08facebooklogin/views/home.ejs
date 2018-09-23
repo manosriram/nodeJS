@@ -1,0 +1,11 @@
+<% if( !user )  { %>
+<p>Welcome to my page.Please Login ... <a href="/login">here</a>.. </p>
+<% } else { %>
+<p>Hello
+    <% user.username %>. View your <a href="/views/profile.ejs">Profile</a>
+</p>
+<% } %>
+
+<% if (!user){  %>
+<p>You Dont Have a Username Please Login ...</p>
+<% } %>
