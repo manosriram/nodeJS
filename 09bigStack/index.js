@@ -1,7 +1,9 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const bodyparser = require("body-parser");
-const port = 3000;
+const passport = require("passport");
+
+const port = process.env.PORT || 3000;
 
 const app = express();
 
@@ -19,9 +21,18 @@ const db = require("./setup/myurl").mongoURL;
 
 //Attempt to connect to database
 mongoose
-  .connect(db)
+  .connect(
+    db,
+    { useNewUrlParser: true }
+  )
   .then(() => console.log("MongoDB Connected Successfully..."))
   .catch(error => console.log(error));
+
+// Passport  middleware
+app.use(passport.initialize());
+
+// Config for jwt Strategy..
+require("./strategies/jsonwtStrategy")(passport);
 
 app.get("/", (req, res) => {
   res.send("Server Up and Running!!!");
@@ -32,6 +43,4 @@ app.use("/api/auth", auth);
 app.use("/api/questions", question);
 app.use("/api/profile", profile);
 
-app.listen(port, () => {
-  console.log(`Serving Running at ${port}`);
-});
+app.listen(port);
