@@ -4,7 +4,6 @@ const bodyparser = require("body-parser");
 const passport = require("passport");
 
 const port = process.env.PORT || 3000;
-
 const app = express();
 
 //bring all routes..
@@ -27,7 +26,6 @@ mongoose
   )
   .then(() => console.log("MongoDB Connected Successfully..."))
   .catch(error => console.log(error));
-
 
 // Passport  middleware
 app.use(passport.initialize());
