@@ -20,17 +20,6 @@ const PersonSchema = new Schema({
   date: {
     type: Date,
     default: Date.now
-<<<<<<< HEAD
-=======
-  },
-  email: {
-    type: String,
-    required: true
-  },
-  gender: {
-    type: String,
-    required: true
->>>>>>> 09bd1ce9b570a08e53db35c4d0f8629e56a40260
   }
 });
 

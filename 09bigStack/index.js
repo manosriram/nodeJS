@@ -11,8 +11,6 @@ const app = express();
 const auth = require("./routes/api/auth");
 const profile = require("./routes/api/profile");
 const question = require("./routes/api/question");
-const question = require("./routes/api/question");
-const profile = require("./routes/api/profile");
 
 //Middleware for Express...
 app.use(bodyparser.urlencoded({ extended: false }));
