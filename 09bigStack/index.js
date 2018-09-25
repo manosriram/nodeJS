@@ -28,6 +28,7 @@ mongoose
   .then(() => console.log("MongoDB Connected Successfully..."))
   .catch(error => console.log(error));
 
+
 // Passport  middleware
 app.use(passport.initialize());
 

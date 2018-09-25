@@ -18,9 +18,8 @@ module.exports = passport => {
           }
           return done(null, false);
         })
+
         .catch(err => console.log(err));
     })
   );
 };
-
-// passport.use(new JwtStrategy(opts, function (jwt_payload, done) {

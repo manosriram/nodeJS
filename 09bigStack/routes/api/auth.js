@@ -66,7 +66,7 @@ router.post("/login", (req, res) => {
     .then(person => {
       if (!person) {
         return res
-          .statusCode(404)
+          .status(404)
           .json({ emailerror: "User Not Found with this Email..." });
       }
       bcrypt
