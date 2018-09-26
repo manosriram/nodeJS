@@ -11,7 +11,7 @@ const Profile = require("../../models/Profile");
 
 // @type  GET
 // @route /api/profile/
-// @desc route for Personal userprofile..
+// @desc  route for Personal userprofile..
 // @access PRIVATE
 router.get(
   "/",
@@ -45,13 +45,19 @@ router.post(
     if (req.body.username) profileValues.username = req.body.username;
     if (req.body.website) profileValues.website = req.body.website;
     if (req.body.country) profileValues.country = req.body.country;
+    if (req.body.date) profileValues.date = req.body.date;
     if (req.body.portfolio) profileValues.portfolio = req.body.portfolio;
-    if (typeof req.body.languages !== undefined) {
-      profileValues.languages = req.body.languages.split(",");
-    }
-    if (req.body.youtube) profileValues.youtube = req.body.youtube;
-    if (req.body.facebook) profileValues.facebook = req.body.facebook;
-    if (req.body.instagram) profileValues.instagram = req.body.instagram;
+
+    //if (typeof req.body.languages !== undefined) {
+    // profileValues.languages = req.body.languages.split(",");
+    //}
+
+    // Get social values..
+    profileValues.social = {};
+
+    if (req.body.youtube) profileValues.social.youtube = req.body.youtube;
+    if (req.body.facebook) profileValues.social.facebook = req.body.facebook;
+    if (req.body.instagram) profileValues.social.instagram = req.body.instagram;
 
     Profile.findOne({ user: req.user.id })
       .then(profile => {
@@ -64,15 +70,17 @@ router.post(
             .then(profile => res.json(profile))
             .catch(err => console.log("Problem in Updating Data...   " + err));
         } else {
-          Profile.findOne({ user: profileValues.username })
+          Profile.findOne({
+            username: profileValues.username
+          })
             .then(profile => {
               // Username Already Exists...
               if (profile) {
-                res
-                  .status(400)
-                  .json({ username: "Username Already Exists..." });
+                res.status(400).json({
+                  username: "Username Already Exists..."
+                });
               }
-              // Save User..
+              // Save User Profile..
               new Profile(profileValues)
                 .save()
                 .then(profile => res.json(profile))
