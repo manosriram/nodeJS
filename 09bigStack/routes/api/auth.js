@@ -32,6 +32,60 @@ router.post("/register", (req, res) => {
         });
       }
     })
+<<<<<<< HEAD
+=======
+    .catch(error => console.log(error));
+});
+
+// @type  POST
+// @route /api/auth/login
+// @desc route for login of user
+// @access PUBLIC
+
+router.post("/login", (req, res) => {
+  const email = req.body.email;
+  const password = req.body.password;
+
+  Person.findOne({ email })
+    .then(person => {
+      if (!person) {
+        return res
+          .status(404)
+          .json({ emailerror: "User Not Found with this Email..." });
+      }
+      bcrypt
+        .compare(password, person.password)
+        .then(isCorrect => {
+          if (isCorrect) {
+            // res.json({ success: "User is Authenticated..." });
+            // use payload and create token for the user...
+            const payload = {
+              id: person.id,
+              name: person.name,
+              email: person.email
+            };
+            jsonwt.sign(
+              payload,
+              key.secret,
+              { expiresIn: 3600 },
+              (err, token) => {
+                if (err) throw err;
+                res.json({
+                  success: true,
+                  token: "Bearer " + token
+                });
+              }
+            );
+          } else {
+            res.status(400).json({
+              passworderror:
+                "Password is not correct...Please Check your password.."
+            });
+          }
+        })
+        .catch(err => console.log(err));
+    })
+>>>>>>> 43280785b0174a7291b66da87d1a707f3543f420
     .catch(err => console.log(err));
 });
 
