@@ -22,6 +22,10 @@ router.post("/register", (req, res) => {
         });
         bcrypt.genSalt(10, (err, salt) => {
           bcrypt.hash(newPerson.password, salt, (err, hash) => {
+<<<<<<< HEAD
+=======
+            //if (err) throw err;
+>>>>>>> 8586ef33e30645f8048767f1ac8e7f5ea1aa9606
             newPerson.password = hash;
             newPerson
               .save()
