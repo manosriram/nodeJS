@@ -32,7 +32,7 @@ router.post("/register", (req, res) => {
           profilepic: req.body.profilepic
         });
 
-        if (newPerson.gender == "Female")
+        if (newPerson.gender == "Female" || newPerson.gender == "female")
           newPerson.profilepic =
             "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/Female_icon.svg/2000px-Female_icon.svg.png";
 
