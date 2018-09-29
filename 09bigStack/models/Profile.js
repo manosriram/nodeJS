@@ -28,8 +28,8 @@ const ProfileSchema = new Schema({
   workrole: [
     {
       role: {
-        required: true,
-        type: String
+        type: String,
+        required: true
       },
       company: {
         type: String
@@ -38,24 +38,20 @@ const ProfileSchema = new Schema({
         type: String
       },
       from: {
-        type: Date,
-        required: true
+        type: Date
       },
       to: {
-        type: Date,
-        required: true
+        type: Date
       },
       current: {
         type: Boolean,
         default: false
       },
       details: {
-        type: String,
-        required: false
+        type: String
       }
     }
   ],
-
   social: {
     youtube: {
       type: String

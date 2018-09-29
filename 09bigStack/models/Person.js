@@ -27,10 +27,6 @@ const PersonSchema = new Schema({
   },
   gender: {
     type: String
-  },
-  behaviour: {
-    type:String,
-    required:true
   }
 });
 

@@ -29,6 +29,7 @@ router.post("/register", (req, res) => {
           password: req.body.password,
           username: req.body.username,
           gender: req.body.gender,
+          country: req.body.country,
           profilepic: req.body.profilepic
         });
 
@@ -118,7 +119,8 @@ router.get(
       name: req.user.name,
       email: req.user.email,
       profilepic: req.user.profilepic,
-      gender: req.user.gender
+      gender: req.user.gender,
+      country: req.user.country
     });
   }
 );
