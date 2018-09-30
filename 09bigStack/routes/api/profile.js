@@ -165,11 +165,11 @@ router.delete(
 );
 
 // @type  GET
-// @route /api/profile/geter/countryName
+// @route /api/profile/get/countryName
 // @desc route for getting your profile using your country
 // @access PUBLIC
 
-router.get("/geter/:id", (req, res) => {
+router.get("/get/:id", (req, res) => {
   Profile.find({ id: req.params.country })
     .populate("user", ["name", "profilepic", "country", "gender"])
     .then(profiles => {
@@ -238,5 +238,4 @@ router.delete(
       .catch(err => console.log(err));
   }
 );
-
 module.exports = router;
