@@ -18,8 +18,21 @@ router.post("/register", (req, res) => {
           name: req.body.name,
           password: req.body.password,
           username: req.body.username,
+<<<<<<< HEAD
           email: req.body.email
         });
+=======
+          gender: req.body.gender,
+          country: req.body.country,
+          profilepic: req.body.profilepic
+        });
+
+        if (newPerson.gender == "Female" || newPerson.gender == "female")
+          newPerson.profilepic =
+            "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/Female_icon.svg/2000px-Female_icon.svg.png";
+
+        // Encrypt password using bcrypt
+>>>>>>> 7521746012cc393c8738e6430313dd70c2f4712f
         bcrypt.genSalt(10, (err, salt) => {
           bcrypt.hash(newPerson.password, salt, (err, hash) => {
 <<<<<<< HEAD
@@ -93,4 +106,27 @@ router.post("/login", (req, res) => {
     .catch(err => console.log(err));
 });
 
+<<<<<<< HEAD
+=======
+// @type  POST
+// @route /api/auth/profile
+// @desc route for user profile
+// @access PRIVATE
+
+router.get(
+  "/profile",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    res.json({
+      id: req.user.id,
+      name: req.user.name,
+      email: req.user.email,
+      profilepic: req.user.profilepic,
+      gender: req.user.gender,
+      country: req.user.country
+    });
+  }
+);
+
+>>>>>>> 7521746012cc393c8738e6430313dd70c2f4712f
 module.exports = router;

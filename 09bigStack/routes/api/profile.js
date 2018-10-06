@@ -102,4 +102,147 @@ router.post(
 >>>>>>> 43280785b0174a7291b66da87d1a707f3543f420
 );
 
+// @type  GET
+// @route /api/profile/username
+// @desc route for getting userprofile based on USERNAME
+// @access PUBLIC
+
+router.get("/:username", (req, res) => {
+  Profile.findOne({ username: req.params.username })
+    .populate("user", ["name", "profilepic"])
+    .then(profile => {
+      if (!profile) res.status(404).json({ userError: "User not found.." });
+      // Put else here...
+      res.json(profile);
+    })
+    .catch(err => console.log("Error in fetching username...   " + err));
+});
+
+// @type  GET
+// @route /api/profile/id
+// @desc route for getting userprofile based on ID
+// @access PUBLIC
+
+// router.get("/get/:id", (req, res) => {
+//   Profile.findOne({ id: req.param.id })
+//     .populate("user", ["name", "profilepic"])
+//     .then(profile => {
+//       if (!profile) res.status(404).json({ userError: "User Not found.." });
+
+//       res.json(profile);
+//     })
+//     .catch(err => console.log(err));
+// });
+
+// @type  GET
+// @route /api/profile/everyone
+// @desc route for getting Everyones user profile
+// @access PUBLIC
+
+router.get("/find/everyone", (req, res) => {
+  Profile.find()
+    .populate("user", ["name", "profilepic"])
+    .then(profiles => {
+      if (!profiles)
+        res.status(404).json({ profileError: "Profile not found.." });
+
+      res.json(profiles);
+    })
+    .catch(err => console.log(err));
+});
+
+// @type  DELETE
+// @route /api/profile/
+// @desc route for deleting user based on id
+// @access PRIVATE
+
+router.delete(
+  "/",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    // Profile.findOne({ _id: req.user.id });
+    Profile.findByIdAndRemove({ _id: req.user.id })
+      .then(() => {
+        Person.findOneAndRemove({ _id: req.user.id })
+          .then(() => res.json({ success: "Delete was a success..." }))
+          .catch(err => console.log(err));
+      })
+      .catch(err => console.log(err));
+  }
+);
+
+// @type  GET
+// @route /api/profile/get/countryName
+// @desc route for getting your profile using your country
+// @access PUBLIC
+
+router.get("/get/:id", (req, res) => {
+  Profile.find({ id: req.params.country })
+    .populate("user", ["name", "profilepic", "country", "gender"])
+    .then(profiles => {
+      if (!profiles)
+        res.json({ countryError: "Users with that Country not found.." });
+      else res.json(profiles);
+    })
+    .catch(err => console.log(err));
+});
+
+// @type  POST
+// @route /api/profile/workrole
+// @desc route for adding work profile of a person
+// @access PRIVATE
+
+router.post(
+  "/workrole",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    Profile.findOne({ user: req.user.id })
+      .then(profile => {
+        if (!profile)
+          res.status(404).json({ profileError: "Profile Not Found..." });
+        const newWork = {
+          role: req.body.role,
+          company: req.body.company,
+          country: req.body.country,
+          from: req.body.from,
+          to: req.body.to,
+          current: req.body.current,
+          details: req.body.details
+        };
+        profile.workrole.unshift(newWork);
+        profile
+          .save()
+          .then(profile => res.json(profile))
+          .catch(err => console.log(err));
+      })
+      .catch(err => console.log(err));
+  }
+);
+
+// @type  DELETE
+// @route /api/profile/workrole/:w_id
+// @desc route for getting userprofile based on USERNAME
+// @access PRIVATE
+
+router.delete(
+  "/workrole/:w_id",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    Profile.findOne({ user: req.user.id })
+      .then(profile => {
+        if (profile) res.json(profile);
+
+        const removeThis = profile.workrole
+          .map(item => item.id)
+          .indexOf(req.params.w_id);
+
+        profile.workrole.splice(removeThis, 1);
+        profile
+          .save()
+          .then(profile => res.json(profile))
+          .catch(err => console.log(err));
+      })
+      .catch(err => console.log(err));
+  }
+);
 module.exports = router;
