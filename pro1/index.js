@@ -5,11 +5,13 @@ const bodyparser = require("body-parser");
 const passport = require("passport");
 const ejs = require("ejs");
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 8000;
 const app = express();
 
-app.set("view engine", "ejs");
+app.engine("html", require("ejs").renderFile);
 app.set("views", path.join(__dirname + "/views"));
+app.set("view engine", "ejs");
+// app.set("scripts", path.join(__dirname + "/scripts"));
 // app.use(express.static(__dirname + "/views"));
 //bring all routes..
 // const auth = require("./routes/api/auth");
@@ -38,10 +40,8 @@ app.use(passport.initialize());
 // Config for jwt Strategy..
 // require("./strategies/jsonwtStrategy")(passport);
 
-var counted = { count: 0 };
-
 app.get("/", (req, res) => {
-  res.render("index");
+  res.render("plain.html");
 });
 
 var count = 0;
