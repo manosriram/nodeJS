@@ -25,6 +25,11 @@ const QuestionSchema = new Schema({
       }
     }
   ],
+
+  count: {
+    type: Number
+  },
+
   answers: [
     {
       user: {

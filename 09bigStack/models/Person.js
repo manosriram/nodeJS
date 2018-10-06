@@ -27,7 +27,7 @@ const Schema = mongoose.Schema;
     type: String,
     required: true
   },
-  gender: {
+  gender: 
     type: String
 <<<<<<< HEAD
 >>>>>>> 8586ef33e30645f8048767f1ac8e7f5ea1aa9606
