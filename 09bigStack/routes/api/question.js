@@ -29,8 +29,7 @@ router.post(
     const newQuestion = new Question({
       user: req.user.id,
       text1: req.body.text1,
-      text2: req.body.text2,
-      named: req.body.name
+      text2: req.body.text2
     });
     newQuestion
       .save()
@@ -55,7 +54,7 @@ router.post(
 
 router.get("/all", (req, res) => {
   Question.find()
-    .populate("user", ["text1", "text2"])
+    .sort("-date")
     .then(questions => {
       if (!questions)
         res
@@ -83,6 +82,74 @@ router.delete(
           .then(res.json({ success: "Question Deleted!!" }))
           .catch(err => console.log(err))
       )
+      .catch(err => console.log(err));
+  }
+);
+
+// @type  POST
+// @route /api/questions/answers/:id
+// @desc  route for answering a question...
+// @access PRIVATE
+
+router.post(
+  "/answers/:id",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    Question.findById(req.params.id)
+      .then(question => {
+        const newAnswer = {
+          user: req.user.id,
+          name: req.body.name,
+          text: req.body.text
+        };
+        question.answers.unshift(newAnswer);
+        question
+          .save()
+          .then(question => res.json(question))
+          .catch(err => console.log(err));
+      })
+      .catch(err => console.log(err));
+  }
+);
+
+// @type  POST
+// @route /api/questions/upvote/:id
+// @desc  route for upvoting a question
+// @access PRIVATE
+
+router.post(
+  "/upvote/:id",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    Profile.findOne({ user: req.user.id })
+      .then(profile => {
+        Question.findById(req.params.id)
+          .then(question => {
+            if (
+              question.upvotes.filter(
+                upvote => upvote.user.toString() === req.user.id.toString()
+              ).length > 0
+            ) {
+              question.upvotes.shift({ user: req.user.id });
+              question.count = question.upvotes.length;
+              question
+                .save()
+                .then(question => res.json(question))
+                .catch(err => console.log(err));
+
+              return res
+                .status(400)
+                .json({ upvoteRemoved: "Your Upvote has been removed!!" });
+            }
+            question.upvotes.unshift({ user: req.user.id });
+            question.count = question.upvotes.length;
+            question
+              .save()
+              .then(question => res.json(question))
+              .catch(err => console.log(err));
+          })
+          .catch(err => console.log(err));
+      })
       .catch(err => console.log(err));
   }
 );

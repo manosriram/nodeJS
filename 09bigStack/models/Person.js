@@ -25,7 +25,7 @@ const Schema = mongoose.Schema;
     type: String,
     required: true
   },
-  gender: {
+  gender: 
     type: String
   },
 });
