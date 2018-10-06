@@ -29,7 +29,7 @@ const ProfileSchema = new Schema({
     {
       role: {
         type: String,
-        required: true
+        // required: true
       },
       company: {
         type: String
