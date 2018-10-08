@@ -19,13 +19,15 @@ const PersonSchema = new Schema({
     required: true
   },
   age: {
-    type: Number
+    type: Number,
+    required: true
   },
   place: {
     type: String
   },
   occupation: {
-    type: String
+    type: String,
+    required: true
   }
 });
 

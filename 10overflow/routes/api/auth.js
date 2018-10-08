@@ -1,5 +1,5 @@
-const express = require("express");
 const router = express.Router();
+const express = require("express");
 const jsonwt = require("jsonwebtoken");
 const passport = require("passport");
 const key = require("../../setup/myurl");
@@ -44,7 +44,7 @@ router.post("/registered", (req, res) => {
           password: req.body.password,
           name: req.body.name,
           age: req.body.age,
-          occupation: req.body.job
+          occupation: req.body.occupation
         });
         bcrypt.genSalt(10, (err, salt) => {
           bcrypt.hash(newPerson.password, salt, (err, hash) => {
@@ -94,7 +94,8 @@ router.post("/loggedIn", (req, res) => {
               { expiresIn: 3600 },
               (err, token) => {
                 // res.session.success("Logged In!!");
-                res.redirect("../../privateTemplates/loggedIn1");
+
+                res.render("../privateTemplates/loggedIn1");
                 // .json({
                 //   success: true,
                 //   token: "Bearer " + token
@@ -110,4 +111,23 @@ router.post("/loggedIn", (req, res) => {
     .catch(err => console.log(err));
 });
 
+// @type    POST
+//@route    /api/auth/name
+// @desc    route for getting the Information of the given user - name.
+// @access  PUBLIC
+
+router.get("/:name", (req, res) => {
+  Person.findOne({ name: req.params.name })
+    .populate("user", ["age", "occupation"])
+    .then(person => {
+      if (!person) {
+        return res
+          .status(404)
+          .json({ notFoundError: "User Profile Not Found!!" });
+      }
+      res.render("index", { person: person });
+      // res.render("index", { person: person });
+    })
+    .catch(err => console.log(err));
+});
 module.exports = router;
