@@ -8,12 +8,30 @@ const app = express();
 
 const Person = require("../../models/Person");
 
+// @type    GET
+//@route    /api/auth/register
+// @desc    route for register page of user registration..
+// @access  PUBLIC
+
+router.get("/register", (req, res) => {
+  res.render("register");
+});
+
+// @type    GET
+//@route    /api/auth/login
+// @desc    route for login page of user login
+// @access  PUBLIC
+
+router.get("/login", (req, res) => {
+  res.render("login");
+});
+
 // @type    POST
 //@route    /api/auth/register
 // @desc    route for registration of user...
 // @access  PUBLIC
 
-router.post("/register", (req, res) => {
+router.post("/registered", (req, res) => {
   Person.findOne({ email: req.body.email })
     .then(person => {
       if (person) {
@@ -24,7 +42,9 @@ router.post("/register", (req, res) => {
         const newPerson = new Person({
           email: req.body.email,
           password: req.body.password,
-          name: req.body.name
+          name: req.body.name,
+          age: req.body.age,
+          occupation: req.body.job
         });
         bcrypt.genSalt(10, (err, salt) => {
           bcrypt.hash(newPerson.password, salt, (err, hash) => {
@@ -46,39 +66,43 @@ router.post("/register", (req, res) => {
 // @desc    route for login of user...
 // @access  PUBLIC
 
-router.post("/login", (req, res) => {
+router.post("/loggedIn", (req, res) => {
   const email = req.body.email;
-  const password = req.body.pasword;
+  const password = req.body.password;
 
   Person.findOne({ email })
     .then(person => {
       if (!person) {
-        res
+        return res
           .status(404)
-          .json({ userNotFound: "User not found with this email!!" });
+          .json({ emailerror: "User not found with this email" });
       }
-
       bcrypt
         .compare(password, person.password)
         .then(isCorrect => {
-          if (ifCorrect) {
+          if (isCorrect) {
+            // res.json({ success: "User is able to login successfully" });
+            //use payload and create token for user
             const payload = {
-              id: req.user.id,
-              email: req.user.email,
-              password: req.user.password
+              id: person.id,
+              name: person.name,
+              email: person.email
             };
-
             jsonwt.sign(
               payload,
               key.secret,
               { expiresIn: 3600 },
-              res.json({
-                success: true,
-                token: "Bearer " + token
-              })
+              (err, token) => {
+                // res.session.success("Logged In!!");
+                res.redirect("../../privateTemplates/loggedIn1");
+                // .json({
+                //   success: true,
+                //   token: "Bearer " + token
+                // })
+              }
             );
           } else {
-            res.status(404).json({ passwordError: "Passwords dont match!!" });
+            res.status(400).json({ passworderror: "Password is not correct" });
           }
         })
         .catch(err => console.log(err));
