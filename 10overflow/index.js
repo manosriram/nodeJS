@@ -65,13 +65,9 @@ app.get("/", (req, res) => {
   res.render("index");
 });
 
-app.get("/register", (req, res) => {
-  res.render("register");
-});
-
-app.get("/login", (req, res) => {
-  res.render("login");
-});
+// app.get("/loggedIn1", (req, res) => {
+//   res.render("loggedIn1");
+// });
 
 //actual routes
 app.use("/api/auth", auth);

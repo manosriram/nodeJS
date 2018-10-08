@@ -23,6 +23,9 @@ const PersonSchema = new Schema({
   },
   place: {
     type: String
+  },
+  occupation: {
+    type: String
   }
 });
 
