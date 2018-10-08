@@ -31,6 +31,7 @@ const PersonSchema = new Schema({
     type: String
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> 8586ef33e30645f8048767f1ac8e7f5ea1aa9606
   }
 =======
@@ -39,6 +40,9 @@ const PersonSchema = new Schema({
 =======
   }
 >>>>>>> d44f32aa4545a7e589af5c448677e2c8a5eaa4ad
+=======
+  }
+>>>>>>> a97d7edd3a37b0edf366100c72bd1a3f5364b199
 });
 
 module.exports = Person = mongoose.model("myPerson", PersonSchema);
