@@ -12,18 +12,8 @@ const auth = require("./routes/api/auth");
 const app = express();
 const port = 5000;
 
-app.get("/api", (req, res) => {
-  const laps = [
-    { apple: "MacOS Mojave" },
-    { windows: "Windows 10" },
-    { ubuntu: "UbuntuOS" }
-  ];
-
-  res.json(laps);
-});
-
 app.listen(5000, () => console.log(`Server Running at port ${port}`));
-=======
+
 const mongoose = require("mongoose");
 const router = express.Router();
 const bodyparser = require("body-parser");
@@ -65,9 +55,7 @@ app.get("/", (req, res) => {
   res.render("index");
 });
 
-// app.get("/loggedIn1", (req, res) => {
-//   res.render("loggedIn1");
-// });
+
 
 //actual routes
 app.use("/api/auth", auth);
@@ -77,4 +65,3 @@ app.use("/api/auth", auth);
 const port = process.env.PORT || 3000;
 
 app.listen(port, () => console.log(`App is running at ${port}`));
->>>>>>> a97d7edd3a37b0edf366100c72bd1a3f5364b199
