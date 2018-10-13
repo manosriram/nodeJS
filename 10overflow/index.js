@@ -7,7 +7,7 @@ const passport = require("passport");
 //bring all routes
 const auth = require("./routes/api/auth");
 // const questions = require("./routes/api/questions");
-// const profile = require("./routes/api/profile");
+const profile = require("./routes/api/profile");
 
 const app = express();
 
@@ -33,7 +33,7 @@ mongoose
 app.use(passport.initialize());
 
 //Config for JWT strategy
-// require("./strategies/jsonwtStrategy")(passport);
+require("./strategies/jsonwtStrategy")(passport);
 
 //just for testing  -> route
 app.get("/", (req, res) => {
@@ -46,8 +46,8 @@ app.get("/", (req, res) => {
 
 //actual routes
 app.use("/api/auth", auth);
+app.use("/api/profile", profile);
 // app.use("/api/questions", questions);
-// app.use("/api/profile", profile);
 
 const port = process.env.PORT || 3000;
 

@@ -1,5 +1,5 @@
-const router = express.Router();
 const express = require("express");
+const router = express.Router();
 const jsonwt = require("jsonwebtoken");
 const passport = require("passport");
 const key = require("../../setup/myurl");
@@ -94,7 +94,6 @@ router.post("/loggedIn", (req, res) => {
               { expiresIn: 3600 },
               (err, token) => {
                 // res.session.success("Logged In!!");
-
                 res.render("../privateTemplates/loggedIn1");
                 // .json({
                 //   success: true,
@@ -116,7 +115,7 @@ router.post("/loggedIn", (req, res) => {
 // @desc    route for getting the Information of the given user - name.
 // @access  PUBLIC
 
-router.get("/:name", (req, res) => {
+router.get("/profile/:name", (req, res) => {
   Person.findOne({ name: req.params.name })
     .populate("user", ["age", "occupation"])
     .then(person => {

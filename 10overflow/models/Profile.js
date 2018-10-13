@@ -11,9 +11,29 @@ const ProfileSchema = new Schema({
     type: String,
     required: true
   },
-  age: {
-    type: Number,
-    required: true
+  website: {
+    type: String
+  },
+  portfolio: {
+    type: String
+  },
+  country: {
+    type: String
+  },
+  social: {
+    youtube: {
+      type: String
+    },
+    facebook: {
+      type: String
+    },
+    instagram: {
+      type: String
+    }
+  },
+  date: {
+    type: Date,
+    default: Date.now
   }
 });
 
