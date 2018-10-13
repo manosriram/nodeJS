@@ -5,6 +5,9 @@ const mongoose = require("mongoose");
 // Load Question Model...
 const Question = require("../../models/Question");
 
+<<<<<<< HEAD
+router.get("/", (req, res) => res.json({ test: "Questions Not Yet Ready..." }));
+=======
 // Load Person Model...
 const Person = require("../../models/Person");
 
@@ -65,6 +68,7 @@ router.get("/all", (req, res) => {
     })
     .catch(err => console.log(err));
 });
+>>>>>>> 7521746012cc393c8738e6430313dd70c2f4712f
 
 // @type  DELETE
 // @route /api/questions/

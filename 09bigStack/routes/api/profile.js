@@ -3,6 +3,12 @@ const router = express.Router();
 const mongoose = require("mongoose");
 const passport = require("passport");
 
+<<<<<<< HEAD
+router.get("/", (req, res) =>
+  res.json({
+    test: "Profile Not Yet Ready..."
+  })
+=======
 // Load Person Model...
 const Person = require("../../models/Person");
 
@@ -93,6 +99,7 @@ router.post(
       })
       .catch(err => console.log("Problem in Fetching Profile " + err));
   }
+>>>>>>> 43280785b0174a7291b66da87d1a707f3543f420
 );
 
 // @type  GET

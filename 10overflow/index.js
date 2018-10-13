@@ -10,6 +10,21 @@ const auth = require("./routes/api/auth");
 const profile = require("./routes/api/profile");
 
 const app = express();
+const port = 5000;
+
+app.listen(5000, () => console.log(`Server Running at port ${port}`));
+
+const mongoose = require("mongoose");
+const router = express.Router();
+const bodyparser = require("body-parser");
+const passport = require("passport");
+
+//bring all routes
+const auth = require("./routes/api/auth");
+// const questions = require("./routes/api/questions");
+// const profile = require("./routes/api/profile");
+
+const app = express();
 
 //Middleware for bodyparser
 app.use(bodyparser.urlencoded({ extended: false }));
@@ -40,9 +55,7 @@ app.get("/", (req, res) => {
   res.render("index");
 });
 
-// app.get("/loggedIn1", (req, res) => {
-//   res.render("loggedIn1");
-// });
+
 
 //actual routes
 app.use("/api/auth", auth);

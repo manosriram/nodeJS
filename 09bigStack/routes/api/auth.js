@@ -1,33 +1,27 @@
 const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcryptjs");
-const jsonwt = require("jsonwebtoken");
-const passport = require("passport");
-const key = require("../../setup/myurl");
 
-router.get("/", (req, res) => res.json({ test: "Auth Succesfull.." }));
+router.get("/", (req, res) => res.json({ test: "Auth success..." }));
 
-//Import Schema for Person To Register...
 const Person = require("../../models/Person");
-
-// @type  POST
-// @route /api/auth/register
-// @desc route for registration of user
-// @access PUBLIC
 
 router.post("/register", (req, res) => {
   Person.findOne({ email: req.body.email })
     .then(person => {
       if (person) {
         return res.status(400).json({
-          emailerror: "Email is Already Registered in our Database..."
+          emailError: "User is Already Registered in the Database..."
         });
       } else {
         const newPerson = new Person({
           name: req.body.name,
-          email: req.body.email,
           password: req.body.password,
           username: req.body.username,
+<<<<<<< HEAD
+          email: req.body.email
+        });
+=======
           gender: req.body.gender,
           country: req.body.country,
           profilepic: req.body.profilepic
@@ -38,9 +32,13 @@ router.post("/register", (req, res) => {
             "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/Female_icon.svg/2000px-Female_icon.svg.png";
 
         // Encrypt password using bcrypt
+>>>>>>> 7521746012cc393c8738e6430313dd70c2f4712f
         bcrypt.genSalt(10, (err, salt) => {
           bcrypt.hash(newPerson.password, salt, (err, hash) => {
+<<<<<<< HEAD
+=======
             //if (err) throw err;
+>>>>>>> 8586ef33e30645f8048767f1ac8e7f5ea1aa9606
             newPerson.password = hash;
             newPerson
               .save()
@@ -51,6 +49,8 @@ router.post("/register", (req, res) => {
         });
       }
     })
+<<<<<<< HEAD
+=======
     .catch(error => console.log(error));
 });
 
@@ -102,9 +102,12 @@ router.post("/login", (req, res) => {
         })
         .catch(err => console.log(err));
     })
+>>>>>>> 43280785b0174a7291b66da87d1a707f3543f420
     .catch(err => console.log(err));
 });
 
+<<<<<<< HEAD
+=======
 // @type  POST
 // @route /api/auth/profile
 // @desc route for user profile
@@ -125,4 +128,5 @@ router.get(
   }
 );
 
+>>>>>>> 7521746012cc393c8738e6430313dd70c2f4712f
 module.exports = router;
