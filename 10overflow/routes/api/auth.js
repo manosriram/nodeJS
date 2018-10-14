@@ -94,11 +94,11 @@ router.post("/loggedIn", (req, res) => {
               { expiresIn: 3600 },
               (err, token) => {
                 // res.session.success("Logged In!!");
-                res.render("../privateTemplates/loggedIn1");
-                // .json({
-                //   success: true,
-                //   token: "Bearer " + token
-                // })
+                // res.render("../privateTemplates/loggedIn1");
+                res.json({
+                  success: true,
+                  token: "Bearer " + token
+                });
               }
             );
           } else {

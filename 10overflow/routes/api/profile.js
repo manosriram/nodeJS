@@ -8,12 +8,6 @@ const app = express();
 const Person = require("../../models/Person");
 const Profile = require("../../models/Profile");
 
-router.get("/", (req, res) => {
-  Profile.findOne({ user: req.user })
-    .then(res.render("info", { user: req.user }))
-    .catch(err => console.log(err));
-});
-
 router.get("/delete", (req, res) => {
   res.render("delete");
 });
@@ -39,20 +33,19 @@ router.get(
 // @access  PRIVATE
 
 router.delete(
-  "/del",
+  "/",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    Profile.findOne({ user: req.user.id }).then(
-      Profile.findByIdAndRemove({ user: req.user.id })
-        .then(() => {
-          Profile.findByIdAndRemove({ _id: req.user.id })
-            .then(
-              res.json({ deleteSuccess: "Successfully Removed Your Account!" })
-            )
-            .catch(err => console.log(err));
-        })
-        .catch(err => console.log(err))
-    );
+    Profile.findOne({ user: req.user.id });
+    Profile.findByIdAndRemove({ user: req.user.id })
+      .then(() => {
+        Profile.findByIdAndRemove({ _id: req.user.id })
+          .then(
+            res.json({ deleteSuccess: "Successfully Removed Your Account!" })
+          )
+          .catch(err => console.log(err));
+      })
+      .catch(err => console.log(err));
   }
 );
 
