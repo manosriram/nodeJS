@@ -1,16 +1,18 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const router = express.Router();
 const bodyparser = require("body-parser");
 const passport = require("passport");
 const session = require("express-session");
 
 const app = express();
+<<<<<<< HEAD
 
 //bring all routes
 const auth = require("./routes/api/auth");
 // const questions = require("./routes/api/questions");
 const profile = require("./routes/api/profile");
+=======
+>>>>>>> 17fbf8e3f8b7a709cb4abbca6e6efcffb8a9460f
 
 //Middleware for bodyparser
 app.use(bodyparser.urlencoded({ extended: false }));
@@ -50,6 +52,7 @@ app.get("/", (req, res) => {
   res.render("index");
 });
 
+<<<<<<< HEAD
 app.get("/login", (req, res) => {
   res.render("login");
 });
@@ -103,6 +106,8 @@ router.post("/loggedIn", (req, res) => {
     .catch(err => console.log(err));
 });
 
+=======
+>>>>>>> 17fbf8e3f8b7a709cb4abbca6e6efcffb8a9460f
 //actual routes
 app.use("/api/auth", auth);
 app.use("/api/profile", profile);

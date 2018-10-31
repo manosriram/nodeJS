@@ -26,6 +26,10 @@ router.get("/login", (req, res) => {
   res.render("login");
 });
 
+router.get("/info", (req, res) => {
+  res.render("info");
+});
+
 // @type    POST
 //@route    /api/auth/register
 // @desc    route for registration of user...
@@ -70,6 +74,7 @@ router.post("/registered", (req, res) => {
 //   const email = req.body.email;
 //   const password = req.body.password;
 
+<<<<<<< HEAD
 //   Person.findOne({ email })
 //     .then(person => {
 //       if (!person) {
@@ -114,24 +119,68 @@ router.post("/registered", (req, res) => {
 //     })
 //     .catch(err => console.log(err));
 // });
+=======
+  Person.findOne({ email })
+    .then(person => {
+      if (!person) {
+        return res
+          .status(404)
+          .json({ emailerror: "User not found with this email" });
+      }
+      bcrypt
+        .compare(password, person.password)
+        .then(isCorrect => {
+          if (isCorrect) {
+            // res.json({ success: "User is able to login successfully" });
+            //use payload and create token for user
+            const payload = {
+              id: person.id,
+              name: person.name,
+              email: person.email
+            };
+            jsonwt.sign(
+              payload,
+              key.secret,
+              { expiresIn: "12h" },
+              (err, token) => {
+                res.render("../privateTemplates/loggedIn1", {
+                  payload: payload
+                });
+                // res.json({
+                // success: true,
+                // token: "Bearer " + token,
+                // payload: payload
+                // });
+              }
+            );
+          } else {
+            res.status(400).json({ passworderror: "Password is not correct" });
+          }
+        })
+        .catch(err => console.log(err));
+    })
+    .catch(err => console.log(err));
+});
+>>>>>>> 17fbf8e3f8b7a709cb4abbca6e6efcffb8a9460f
 
 // @type    POST
 //@route    /api/auth/name
 // @desc    route for getting the Information of the given user - name.
 // @access  PUBLIC
 
-router.get("/profile/:name", (req, res) => {
-  Person.findOne({ name: req.params.name })
-    .populate("user", ["age", "occupation"])
+router.post("/getInfo", (req, res) => {
+  Person.findOne({ email: req.body.email })
     .then(person => {
       if (!person) {
-        return res
-          .status(404)
-          .json({ notFoundError: "User Profile Not Found!!" });
+        return res.json({ notFoundError: "User Not Found with this email.." });
       }
-      res.render("index", { person: person });
-      // res.render("index", { person: person });
+      const payload = {
+        id: person.id,
+        email: person.email
+      };
+      return res.json({ user: req.user });
     })
     .catch(err => console.log(err));
 });
+
 module.exports = router;
