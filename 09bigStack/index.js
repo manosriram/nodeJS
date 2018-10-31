@@ -16,6 +16,7 @@ app.use(bodyparser.json());
 
 //mongoDB configuration
 const db = require("./setup/myurl").mongoURL;
+app.'use strict';
 
 //Attempt to connect to database
 mongoose

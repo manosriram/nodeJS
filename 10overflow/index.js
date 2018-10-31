@@ -3,34 +3,29 @@ const mongoose = require("mongoose");
 const router = express.Router();
 const bodyparser = require("body-parser");
 const passport = require("passport");
+const session = require("express-session");
+
+const app = express();
 
 //bring all routes
 const auth = require("./routes/api/auth");
 // const questions = require("./routes/api/questions");
 const profile = require("./routes/api/profile");
 
-const app = express();
-const port = 5000;
-
-app.listen(5000, () => console.log(`Server Running at port ${port}`));
-
-const mongoose = require("mongoose");
-const router = express.Router();
-const bodyparser = require("body-parser");
-const passport = require("passport");
-
-//bring all routes
-const auth = require("./routes/api/auth");
-// const questions = require("./routes/api/questions");
-// const profile = require("./routes/api/profile");
-
-const app = express();
-
 //Middleware for bodyparser
 app.use(bodyparser.urlencoded({ extended: false }));
 app.use(bodyparser.json());
 
+app.use(
+  session({ secret: "1234manomano", resave: false, saveUninitialized: true })
+);
+
 app.set("view engine", "ejs");
+
+app.get("/confirmAuth", (req, res) => {
+  if (req.session.id) return res.send("Logged In");
+  else return res.send("Not Logged In");
+});
 
 //mongoDB configuration
 const db = require("./setup/myurl").mongoURL;
@@ -55,13 +50,65 @@ app.get("/", (req, res) => {
   res.render("index");
 });
 
+app.get("/login", (req, res) => {
+  res.render("login");
+});
 
+router.post("/loggedIn", (req, res) => {
+  const email = req.body.email;
+  const password = req.body.password;
+
+  Person.findOne({ email })
+    .then(person => {
+      if (!person) {
+        return res
+          .status(404)
+          .json({ emailerror: "User not found with this email" });
+      }
+      bcrypt
+        .compare(password, person.password)
+        .then(isCorrect => {
+          if (isCorrect) {
+            // res.json({ success: "User is able to login successfully" });
+            //use payload and create token for user
+            const payload = {
+              id: person.id,
+              name: person.name,
+              email: person.email
+            };
+            req.session.person = person;
+            jsonwt.sign(
+              payload,
+              key.secret,
+              { expiresIn: 64000 },
+              (err, token) => {
+                // res.session.success("Logged In!!");
+
+                res.render("../privateTemplates/loggedIn1");
+
+                // console.log(token);
+
+                // res.json({
+                //   success: true,
+                //   token: "Bearer " + token
+                // });
+              }
+            );
+          } else {
+            res.status(400).json({ passworderror: "Password is not correct" });
+          }
+        })
+        .catch(err => console.log(err));
+    })
+    .catch(err => console.log(err));
+});
 
 //actual routes
 app.use("/api/auth", auth);
 app.use("/api/profile", profile);
+
 // app.use("/api/questions", questions);
 
 const port = process.env.PORT || 3000;
 
-app.listen(port, () => console.log(`App is running at ${port}`));
+app.listen(port, () => console.log(`Server Running at port ${port}`));
