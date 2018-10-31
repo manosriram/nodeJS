@@ -12,10 +12,13 @@
 </head>
 
 <body>
-    <h1>
-        Hello!!
-        <%= user.email %>
-    </h1>
+    <h1>Welcome to the Info Page.. </h1>
+
+    <form action="/api/auth/getInfo" method="POST">
+        <input type="email" name="email" placeholder="Email">
+        <input type="submit" value="Submit">
+    </form>
+
 </body>
 
 </html>

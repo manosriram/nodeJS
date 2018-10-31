@@ -26,6 +26,10 @@ router.get("/login", (req, res) => {
   res.render("login");
 });
 
+router.get("/info", (req, res) => {
+  res.render("info");
+});
+
 // @type    POST
 //@route    /api/auth/register
 // @desc    route for registration of user...
@@ -91,14 +95,16 @@ router.post("/loggedIn", (req, res) => {
             jsonwt.sign(
               payload,
               key.secret,
-              { expiresIn: 3600 },
+              { expiresIn: "12h" },
               (err, token) => {
-                // res.session.success("Logged In!!");
-                // res.render("../privateTemplates/loggedIn1");
-                res.json({
-                  success: true,
-                  token: "Bearer " + token
+                res.render("../privateTemplates/loggedIn1", {
+                  payload: payload
                 });
+                // res.json({
+                // success: true,
+                // token: "Bearer " + token,
+                // payload: payload
+                // });
               }
             );
           } else {
@@ -115,18 +121,19 @@ router.post("/loggedIn", (req, res) => {
 // @desc    route for getting the Information of the given user - name.
 // @access  PUBLIC
 
-router.get("/profile/:name", (req, res) => {
-  Person.findOne({ name: req.params.name })
-    .populate("user", ["age", "occupation"])
+router.post("/getInfo", (req, res) => {
+  Person.findOne({ email: req.body.email })
     .then(person => {
       if (!person) {
-        return res
-          .status(404)
-          .json({ notFoundError: "User Profile Not Found!!" });
+        return res.json({ notFoundError: "User Not Found with this email.." });
       }
-      res.render("index", { person: person });
-      // res.render("index", { person: person });
+      const payload = {
+        id: person.id,
+        email: person.email
+      };
+      return res.json({ user: req.user });
     })
     .catch(err => console.log(err));
 });
+
 module.exports = router;

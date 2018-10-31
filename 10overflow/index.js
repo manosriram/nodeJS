@@ -1,6 +1,5 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const router = express.Router();
 const bodyparser = require("body-parser");
 const passport = require("passport");
 

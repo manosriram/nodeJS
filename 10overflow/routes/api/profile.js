@@ -32,7 +32,7 @@ router.get(
 // @desc    route for delete an user account
 // @access  PRIVATE
 
-router.delete(
+router.post(
   "/",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
@@ -48,5 +48,6 @@ router.delete(
       .catch(err => console.log(err));
   }
 );
+
 
 module.exports = router;
