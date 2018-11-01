@@ -1,10 +1,10 @@
 const express = require("express");
 const router = express.Router();
-const jsonwt = require("jsonwebtoken");
 const passport = require("passport");
 const key = require("../../setup/myurl");
 const bcrypt = require("bcryptjs");
 const app = express();
+const jsonwt = require("jsonwebtoken");
 
 const Person = require("../../models/Person");
 
@@ -70,10 +70,56 @@ router.post("/registered", (req, res) => {
 // @desc    route for login of user...
 // @access  PUBLIC
 
-router.post("/loggedIn", (req, res) => {
-  const email = req.body.email;
-  const password = req.body.password;
+// router.post("/loggedIn", (req, res) => {
+//   const email = req.body.email;
+//   const password = req.body.password;
 
+<<<<<<< HEAD
+//   Person.findOne({ email })
+//     .then(person => {
+//       if (!person) {
+//         return res
+//           .status(404)
+//           .json({ emailerror: "User not found with this email" });
+//       }
+//       bcrypt
+//         .compare(password, person.password)
+//         .then(isCorrect => {
+//           if (isCorrect) {
+//             // res.json({ success: "User is able to login successfully" });
+//             //use payload and create token for user
+//             const payload = {
+//               id: person.id,
+//               name: person.name,
+//               email: person.email
+//             };
+//             req.session.person = person;
+//             jsonwt.sign(
+//               payload,
+//               key.secret,
+//               { expiresIn: 64000 },
+//               (err, token) => {
+//                 // res.session.success("Logged In!!");
+
+//                 res.render("../privateTemplates/loggedIn1");
+
+//                 // console.log(token);
+
+//                 // res.json({
+//                 //   success: true,
+//                 //   token: "Bearer " + token
+//                 // });
+//               }
+//             );
+//           } else {
+//             res.status(400).json({ passworderror: "Password is not correct" });
+//           }
+//         })
+//         .catch(err => console.log(err));
+//     })
+//     .catch(err => console.log(err));
+// });
+=======
   Person.findOne({ email })
     .then(person => {
       if (!person) {
@@ -114,6 +160,7 @@ router.post("/loggedIn", (req, res) => {
     })
     .catch(err => console.log(err));
 });
+>>>>>>> 17fbf8e3f8b7a709cb4abbca6e6efcffb8a9460f
 
 // @type    POST
 //@route    /api/auth/name
