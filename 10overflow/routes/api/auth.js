@@ -97,7 +97,7 @@ router.post("/loggedIn", (req, res) => {
               key.secret,
               { expiresIn: "2 days" },
               (err, token) => {
-                res.render("routes/api/loggedIn1", {
+                res.render("../privateTemplates/loggedIn1", {
                   payload: payload
                 });
                 // success: true,

@@ -34,14 +34,6 @@ mongoose
   .catch(err => console.log(err));
 
 // required for passport session
-app.use(
-  session({
-    secret: "secrettexthere",
-    saveUninitialized: true,
-    resave: true
-    // using store session on MongoDB using express-session + connect
-  })
-);
 
 // Init passport authentication
 app.use(passport.initialize());
