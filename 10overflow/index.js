@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 const bodyparser = require("body-parser");
 const passport = require("passport");
 const session = require("express-session");
+const cookieParser = require("cookie-parser");
 
 const app = express();
 //bring all routes
@@ -15,9 +16,12 @@ const profile = require("./routes/api/profile");
 app.use(bodyparser.urlencoded({ extended: false }));
 app.use(bodyparser.json());
 
+app.use(cookieParser());
 app.use(
-  session({ secret: "1234manomano", resave: false, saveUninitialized: true })
+  session({ secret: "secretKey", resave: false, saveUninitialized: false })
 );
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.set("view engine", "ejs");
 
@@ -33,21 +37,6 @@ mongoose
   .then(() => console.log("MongoDB connected successfully"))
   .catch(err => console.log(err));
 
-// required for passport session
-app.use(
-  session({
-    secret: "secrettexthere",
-    saveUninitialized: true,
-    resave: true
-    // using store session on MongoDB using express-session + connect
-  })
-);
-
-// Init passport authentication
-app.use(passport.initialize());
-// persistent login sessions
-app.use(passport.session());
-
 //Config for JWT strategy
 require("./strategies/jsonwtStrategy")(passport);
 
@@ -56,25 +45,25 @@ app.get("/", (req, res) => {
   res.render("index");
 });
 
-app.get("/loginTest", (req, res) => {
-  res.json({ u: "k" });
-});
-
-app.get("/check", (req, res, next) => {
-  if (req.isAuthenticated()) next();
-  else res.json({ nope: "not logged in" });
-});
-
-app.get("/login", (req, res) => {
-  res.render("login");
+app.get("/check", (req, res) => {
+  console.log(req.user);
+  console.log(req.isAuthenticated());
 });
 
 //actual routes
 app.use("/api/auth", auth);
 app.use("/api/profile", profile);
 
-// app.use("/api/questions", questions);
+passport.serializeUser(function(user_id, done) {
+  done(null, user.id);
+});
 
+passport.deserializeUser(function(user_id, done) {
+  User.findById(id, function(err, user) {
+    done(null, user);
+  });
+});
+// app.use("/api/questions", questions);
 const port = process.env.PORT || 3000;
 
 app.listen(port, () => console.log(`Server Running at port ${port}`));
