@@ -95,12 +95,11 @@ router.post("/registered", (req, res) => {
             jsonwt.sign(
               payload,
               key.secret,
-              { expiresIn: "12h" },
+              { expiresIn: "2 days" },
               (err, token) => {
                 res.render("../privateTemplates/loggedIn1", {
                   payload: payload
                 });
-                // res.json({
                 // success: true,
                 // token: "Bearer " + token,
                 // payload: payload
