@@ -70,9 +70,9 @@ router.post("/registered", (req, res) => {
 // @desc    route for login of user...
 // @access  PUBLIC
 
-// router.post("/loggedIn", (req, res) => {
-//   const email = req.body.email;
-//   const password = req.body.password;
+router.post("/loggedIn", (req, res) => {
+  const email = req.body.email;
+  const password = req.body.password;
 
   Person.findOne({ email })
     .then(person => {
@@ -97,7 +97,7 @@ router.post("/registered", (req, res) => {
               key.secret,
               { expiresIn: "2 days" },
               (err, token) => {
-                res.render("../privateTemplates/loggedIn1", {
+                res.render("routes/api/loggedIn1", {
                   payload: payload
                 });
                 // success: true,
@@ -113,6 +113,7 @@ router.post("/registered", (req, res) => {
         .catch(err => console.log(err));
     })
     .catch(err => console.log(err));
+});
 
 // @type    POST
 //@route    /api/auth/name
