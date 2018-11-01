@@ -19,9 +19,9 @@
 <body>
     <div class="jumbotron">
         <div class="container">
+            <h1>Logged In!!</h1>
             <% if (payload.id != 0) { %>
             <h2>Email :</h2>
-            <h1>Logged In!!</h1>
             <p>
                 <%= payload.email %>
             </p>
@@ -34,6 +34,7 @@
             <% if (payload.id == 0) { %>
             <h1>Please Login to continue..</h1>
             <% } %>
+
 
         </div>
     </div>

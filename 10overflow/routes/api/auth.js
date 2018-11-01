@@ -66,7 +66,7 @@ router.post("/registered", (req, res) => {
 });
 
 // @type    POST
-//@route    /api/auth/login
+//@route    /api/auth/loggedIn
 // @desc    route for login of user...
 // @access  PUBLIC
 
@@ -87,6 +87,7 @@ router.post("/loggedIn", (req, res) => {
           if (isCorrect) {
             // res.json({ success: "User is able to login successfully" });
             //use payload and create token for user
+            const user_id = person.id;
             const payload = {
               id: person.id,
               name: person.name,
@@ -95,15 +96,11 @@ router.post("/loggedIn", (req, res) => {
             jsonwt.sign(
               payload,
               key.secret,
-              { expiresIn: "2 days" },
+              { expiresIn: "12h" },
               (err, token) => {
                 res.render("../privateTemplates/loggedIn1", {
                   payload: payload
                 });
-                // success: true,
-                // token: "Bearer " + token,
-                // payload: payload
-                // });
               }
             );
           } else {
