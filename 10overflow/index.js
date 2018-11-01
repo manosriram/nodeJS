@@ -2,6 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const bodyparser = require("body-parser");
 const passport = require("passport");
+const session = require("express-session");
 
 //bring all routes
 const auth = require("./routes/api/auth");
@@ -28,8 +29,24 @@ mongoose
   .then(() => console.log("MongoDB connected successfully"))
   .catch(err => console.log(err));
 
-//Passport middleware
+// required for passport session
+app.use(
+  session({
+    secret: "secrettexthere",
+    saveUninitialized: true,
+    resave: true,
+    // using store session on MongoDB using express-session + connect
+    store: new MongoStore({
+      url: config.urlMongo,
+      collection: "sessions"
+    })
+  })
+);
+
+// Init passport authentication
 app.use(passport.initialize());
+// persistent login sessions
+app.use(passport.session());
 
 //Config for JWT strategy
 require("./strategies/jsonwtStrategy")(passport);
@@ -37,6 +54,11 @@ require("./strategies/jsonwtStrategy")(passport);
 //just for testing  -> route
 app.get("/", (req, res) => {
   res.render("index");
+});
+
+app.get("/check", (req, res, next) => {
+  if (req.isAuthenticated()) next();
+  else res.json({ nope: "not logged in" });
 });
 
 //actual routes
