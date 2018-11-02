@@ -30,6 +30,10 @@ router.get("/info", (req, res) => {
   res.render("info");
 });
 
+router.get("/dataCheck", (req, res) => {
+  res.render("dataCheck");
+});
+
 // @type    POST
 //@route    /api/auth/register
 // @desc    route for registration of user...
@@ -87,7 +91,6 @@ router.post("/loggedIn", (req, res) => {
           if (isCorrect) {
             // res.json({ success: "User is able to login successfully" });
             //use payload and create token for user
-            const user_id = person.id;
             const payload = {
               id: person.id,
               name: person.name,
@@ -96,7 +99,7 @@ router.post("/loggedIn", (req, res) => {
             jsonwt.sign(
               payload,
               key.secret,
-              { expiresIn: "12h" },
+              { expiresIn: "1h" },
               (err, token) => {
                 res.render("../privateTemplates/loggedIn1", {
                   payload: payload
@@ -128,6 +131,24 @@ router.post("/getInfo", (req, res) => {
         email: person.email
       };
       return res.json({ user: req.user });
+    })
+    .catch(err => console.log(err));
+});
+
+router.post("/dataCheck", (req, res) => {
+  const id = req.body.id;
+  Person.findById(id)
+    .then(person => {
+      if (!person) console.log("No Person with that ID..");
+      else {
+        data = {
+          id: person.id,
+          name: person.name,
+          email: person.email,
+          age: person.age
+        };
+        return res.render("getInfo", { data: data });
+      }
     })
     .catch(err => console.log(err));
 });

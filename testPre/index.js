@@ -1,4 +1,5 @@
 var express = require("express");
+var mongoose = require("mongoose");
 var path = require("path");
 var passport = require("passport");
 var cookieParser = require("cookie-parser");
@@ -11,6 +12,18 @@ var routes = require("./routes/route");
 
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
+
+// MongoDB configuration...
+const db = require("./setup/url").mongoURL;
+
+// Connecting to the Database..
+mongoose
+  .connect(
+    db,
+    { useNewUrlParser: true }
+  )
+  .then(() => console.log("MongoDB connected Successfully..."))
+  .catch(err => console.log(err));
 
 app.use(expressValidator());
 app.use(bodyParser.json());
