@@ -1,4 +1,4 @@
 module.exports = {
-  mongoURL: "mongodb://mongodata:mano1234@ds125273.mlab.com:25273/mongodata",
+  mongoURL: "mongodb://manosriram:mano1234@ds249623.mlab.com:49623/previewtest",
   secret: "mano1234"
 };

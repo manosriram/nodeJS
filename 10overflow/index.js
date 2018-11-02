@@ -37,16 +37,6 @@ mongoose
   .then(() => console.log("MongoDB connected successfully"))
   .catch(err => console.log(err));
 
-<<<<<<< HEAD
-// required for passport session
-
-// Init passport authentication
-app.use(passport.initialize());
-// persistent login sessions
-app.use(passport.session());
-
-=======
->>>>>>> d76f40634351ff86ebaeacf03fbab3d57524fd56
 //Config for JWT strategy
 require("./strategies/jsonwtStrategy")(passport);
 
