@@ -43,4 +43,8 @@ router.get("/check", (req, res) => {
   req.session.destroy();
 });
 
+// router.get('/getData', (req, res)=> {
+
+// })
+
 module.exports = router;
