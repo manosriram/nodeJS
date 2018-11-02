@@ -3,6 +3,8 @@ var session = require("express-session");
 var router = express.Router();
 var checker;
 
+const Person = require("../models/Person");
+
 router.get("/", (req, res, next) => {
   res.render("index", {
     title: "Form Validiation",
@@ -43,6 +45,13 @@ router.get("/check", (req, res) => {
   req.session.destroy();
 });
 
-router.get("/getData", (req, res) => {});
+router.get("/checkDatabase", (req, res) => {
+  Person.findById("sidbifsifudf")
+    .then(person => {
+      if (!person) return res.json({ empty: "Empty Database..." });
+      if (person) return res.json({ notEmpty: "Database not empty.." });
+    })
+    .catch(err => console.log(err));
+});
 
 module.exports = router;
