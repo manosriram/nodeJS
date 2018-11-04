@@ -91,9 +91,7 @@ router.post("/login", (req, res) => {
               key.secret,
               { expiresIn: 3600 },
               (err, token) => {
-                header = { authorization: token };
-                console.log(header);
-                // res.json({ success: true, token: token });
+                res.json({ success: true, token: token });
               }
             );
           } else {
