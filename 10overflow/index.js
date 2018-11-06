@@ -3,8 +3,10 @@ const express = require("express");
 const mongoose = require("mongoose");
 const bodyparser = require("body-parser");
 const port = process.env.PORT || 3000;
+const session = require("express-session");
 const passport = require("passport");
 const app = express();
+const MongoStore = require("connect-mongo")(session);
 
 // Importing all Routes
 const auth = require("./routes/api/auth");
@@ -27,7 +29,16 @@ mongoose
 
 // Passport Middleware.
 app.use(passport.initialize());
-app.use(passport.session());
+
+app.use(
+  session({
+    secret: "mano1234",
+    saveUninitialized: false,
+    resave: false,
+    store: new MongoStore({ mongooseConnection: mongoose.connection }),
+    cookie: { maxAge: 180 * 60 * 100 }
+  })
+);
 //Config for JWT Strategy.
 require("./strategies/jsonwtStrategy")(passport);
 

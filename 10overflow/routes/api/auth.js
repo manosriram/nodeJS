@@ -95,11 +95,13 @@ router.post("/login", (req, res) => {
               (err, token) => {
                 if (err) throw err;
 
-                // res.json({
-                //   success: true,
-                //   token: "Bearer " + token
-                // });
-                res.render("loggedin", { payload });
+                // res.cookie.Authorization = token;
+                localStorage.setItem("Authorization", token);
+                res.json({
+                  success: true,
+                  token: token
+                });
+                // res.render("loggedin", { payload });
               }
             );
           } else {
@@ -118,11 +120,11 @@ router.post("/login", (req, res) => {
 
 router.get(
   "/profile",
-  passport.authenticate("jwt", { session: false }),
+  localStorage.getItem("Authorization"),
+  passport.authenticate("jwt", { session: true }),
   (req, res) => {
     console.log(req);
     res.json({ success: "Private Route Accessed.!!" });
   }
 );
-
 module.exports = router;
