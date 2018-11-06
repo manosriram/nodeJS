@@ -16,7 +16,7 @@ const PersonSchema = new Schema({
   },
   username: {
     type: String,
-    required: false
+    required: true
   },
   profilePic: {
     type: String,
@@ -25,6 +25,10 @@ const PersonSchema = new Schema({
   date: {
     type: Date,
     default: Date.now
+  },
+  token: {
+    type: String,
+    default: undefined
   }
 });
 

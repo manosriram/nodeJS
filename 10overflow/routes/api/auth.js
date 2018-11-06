@@ -4,6 +4,10 @@ const bcrypt = require("bcryptjs");
 const jsonwt = require("jsonwebtoken");
 const passport = require("passport");
 const key = require("../../setup/myurl");
+const cors = require("cors");
+router.use(cors());
+const app = express();
+const db = require("../../setup/myurl").mongoURL;
 
 // @type -- GET
 // @route -- /api/auth/
@@ -41,7 +45,8 @@ router.post("/register", (req, res) => {
         const newPerson = new Person({
           name: req.body.name,
           email: req.body.email,
-          password: req.body.password
+          password: req.body.password,
+          username: req.body.username
         });
         // Encrypt Password using BCryptJS
         bcrypt.genSalt(10, (err, salt) => {
@@ -70,59 +75,60 @@ router.post("/login", (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
 
-  Person.findOne({ email })
-    .then(person => {
-      if (!person) {
-        return res
-          .status(404)
-          .json({ emailError: "User not found with this Email.." });
-      }
-      bcrypt
-        .compare(password, person.password)
-        .then(isCorrect => {
-          if (isCorrect) {
-            // res.json({ success: "User is Logged-In successfully.." });
-            // Use Payload and create a token for the user..
-            const payload = {
-              id: person.id,
-              name: person.name,
-              email: person.email
-            };
-            jsonwt.sign(
-              payload,
-              key.secret,
-              { expiresIn: 3600 },
-              (err, token) => {
-                if (err) throw err;
+  if (!req.cookies.auth_t) {
+    Person.findOne({ email })
+      .then(person => {
+        if (!person) {
+          return res
+            .status(404)
+            .json({ emailError: "User not found with this Email.." });
+        }
+        bcrypt
+          .compare(password, person.password)
+          .then(isCorrect => {
+            if (isCorrect) {
+              // Use Payload and create a token for the user..
+              var payload = {
+                id: person.id,
+                name: person.name,
+                email: person.email,
+                username: person.username
+              };
 
-                // res.json({
-                //   success: true,
-                //   token: "Bearer " + token
-                // });
-                res.render("loggedin", { payload });
-              }
-            );
-          } else {
-            res.status(400).json({ noAccess: "Password Incorrect." });
-          }
-        })
-        .catch(err => console.log(err));
-    })
-    .catch(err => console.log(err));
+              jsonwt.sign(
+                payload,
+                key.secret,
+                { expiresIn: 3600 },
+                (err, token) => {
+                  res.cookie("auth_t", token);
+                  res.cookie("__id", person.id, { maxAge: 900000 });
+
+                  res.json({
+                    success: true,
+                    token: "Bearer " + token
+                  });
+                }
+              );
+            } else {
+              res.status(400).json({ noAccess: "Password Incorrect." });
+            }
+          })
+          .catch(err => console.log(err));
+      })
+      .catch(err => console.log(err));
+  } else {
+    res.json({
+      logoutException:
+        "User Already Logged in..Please Logout and then Continue.."
+    });
+  }
 });
 
-// @type -- GET
-// @route -- /api/auth/profile
-// @desc -- Route for Getting Profile Information of the Logged in User.
-// @access -- Private
-
-router.get(
-  "/profile",
-  passport.authenticate("jwt", { session: false }),
-  (req, res) => {
-    console.log(req);
-    res.json({ success: "Private Route Accessed.!!" });
-  }
-);
-
+router.get("/logout", (req, res) => {
+  loginStat = false;
+  res.clearCookie("auth_t");
+  res.clearCookie("__id");
+  req.logout();
+  res.redirect("/api/auth/login");
+});
 module.exports = router;
