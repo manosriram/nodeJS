@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 const PersonSchema = new Schema({
   name: {
     type: String,
-    default: true
+    required: true
   },
   email: {
     type: String,
@@ -30,10 +30,6 @@ const PersonSchema = new Schema({
     type: String,
     default: undefined
   }
-  // post: {
-  //   type: String,
-  //   required: false
-  // }
 });
 
 module.exports = Person = mongoose.model("myPerson", PersonSchema);
