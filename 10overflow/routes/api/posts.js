@@ -20,7 +20,7 @@ router.post("/post", (req, res) => {
       const newPost = new Post({
         title: req.body.title,
         textArea: req.body.textArea,
-        _id: user.id
+        id: user.id
       });
       user._id = user.id;
       newPost
@@ -55,6 +55,27 @@ router.get("/post", (req, res) => {
 router.get("/showAll", (req, res) => {
   Post.find()
     .then(post => res.json(post))
+    .catch(err => console.log(err));
+});
+
+// @type -- GET
+// @route -- /api/posts/:name
+// @desc -- Route for Getting the profile based on username
+// @access -- PUBLIC
+
+router.get("/:name", (req, res) => {
+  Person.findOne({ name: req.params.name })
+    .then(person => {
+      if (!person) {
+        res.status(404).json({ notFound: "User not found with this name.." });
+      } else {
+        Post.find({ id: person.id })
+          .then(post => {
+            res.render("postInfo", { data: post, user: person });
+          })
+          .catch(err => console.log(err));
+      }
+    })
     .catch(err => console.log(err));
 });
 
