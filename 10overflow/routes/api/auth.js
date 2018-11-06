@@ -100,10 +100,7 @@ router.post("/login", (req, res) => {
                 key.secret,
                 { expiresIn: 3600 },
                 (err, token) => {
-                  res.cookie("auth_t", token);
-                  res.cookie("__id", person.id, { maxAge: 900000 });
-                  person.token = token;
-                  person.save();
+                  res.cookie("auth_t", token, { maxAge: 900000 });
                   res.json({
                     success: true,
                     token: "Bearer " + token
@@ -126,20 +123,14 @@ router.post("/login", (req, res) => {
 });
 
 router.get("/logout", (req, res) => {
-  var _sec = req.cookies.__id;
-  Person.findById(_sec)
-    .then(person => {
-      if (!person) {
-        return res.status(404).json({ noUser: "Login to Logout!" });
-      } else {
-        person.token = undefined;
-        person.save().catch(err => console.log(err));
-      }
-    })
-    .catch(err => console.log(err));
-  res.clearCookie("auth_t");
-  res.clearCookie("__id");
-  req.logout();
-  res.status(200).redirect("/api/auth/login");
+  jsonwt.verify(req.cookies.auth_t, key.secret, (err, user) => {
+    if (user) {
+      res.clearCookie("auth_t");
+      req.logout();
+      res.status(200).redirect("/api/auth/login");
+    } else {
+      res.status(403).json({ noUser: "Access Forbidden" });
+    }
+  });
 });
 module.exports = router;

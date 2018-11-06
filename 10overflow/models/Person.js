@@ -30,6 +30,10 @@ const PersonSchema = new Schema({
     type: String,
     default: undefined
   }
+  // post: {
+  //   type: String,
+  //   required: false
+  // }
 });
 
 module.exports = Person = mongoose.model("myPerson", PersonSchema);
