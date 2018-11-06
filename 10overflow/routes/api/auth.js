@@ -5,7 +5,6 @@ const jsonwt = require("jsonwebtoken");
 const passport = require("passport");
 const key = require("../../setup/myurl");
 const cors = require("cors");
-router.use(cors());
 const app = express();
 const db = require("../../setup/myurl").mongoURL;
 
@@ -98,7 +97,7 @@ router.post("/login", (req, res) => {
               jsonwt.sign(
                 payload,
                 key.secret,
-                { expiresIn: 3600 },
+                { expiresIn: 604800000 },
                 (err, token) => {
                   res.cookie("auth_t", token, { maxAge: 900000 });
                   res.json({

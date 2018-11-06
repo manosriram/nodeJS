@@ -12,7 +12,7 @@ const key = require("./setup/myurl").secret;
 // Importing all Routes
 const auth = require("./routes/api/auth");
 const profile = require("./routes/api/profile");
-const questions = require("./routes/api/questions");
+const posts = require("./routes/api/posts");
 
 app.set("view engine", "ejs");
 app.use(cookieParser());
@@ -23,7 +23,7 @@ app.use(
     saveUninitialized: false,
     resave: false,
     cookie: {
-      maxAge: 14 * 24 * 60 * 60 * 1000,
+      maxAge: 604800000,
       httpOnly: true
     }
   })
@@ -70,7 +70,7 @@ passport.deserializeUser(function(id, done) {
 // Actual routes.
 app.use("/api/auth", auth);
 app.use("/api/profile", profile);
-app.use("/api/questions", questions);
+app.use("/api/posts", posts);
 
 app.listen(port, () => {
   console.log(`Server running at Port ${port}`);
