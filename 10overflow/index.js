@@ -23,7 +23,7 @@ app.use(
     saveUninitialized: false,
     resave: false,
     cookie: {
-      maxAge: 604800000,
+      maxAge: 604800000, // 1 Week
       httpOnly: true
     }
   })

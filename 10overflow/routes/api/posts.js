@@ -20,7 +20,7 @@ router.post("/post", (req, res) => {
       const newPost = new Post({
         title: req.body.title,
         textArea: req.body.textArea,
-        _id: user.id
+        id: user.id
       });
       user._id = user.id;
       newPost
@@ -42,7 +42,7 @@ router.get("/post", (req, res) => {
     if (user) {
       res.render("post");
     } else {
-      res.send("Route cant be accessed!");
+      res.status(403).json({ noAccess: "Please Login To Post.." });
     }
   });
 });
