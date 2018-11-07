@@ -21,8 +21,14 @@
     <h4>All Posts : </h4>
     <table>
         <% for(var i=0; i < data.length; i++) { %>
+
+
         <tr>
+
             <td>
+                <h3>Post
+                    <%= i+1 %> :
+                </h3>
                 Title :
                 <%= data[i].title %>
             </td>
