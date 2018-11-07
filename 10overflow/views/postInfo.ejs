@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <h3>
+        User :
+        <%= user.name %>
+    </h3>
+    <h3>
+        Email :
+        <%= user.email %>
+    </h3>
+    <h3>-------------------------------------------------------------------------------------------------------------------</h3>
+    <h4>All Posts : </h4>
+    <table>
+        <% for(var i=0; i < data.length; i++) { %>
+        <tr>
+            <td>
+                Title :
+                <%= data[i].title %>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Post :
+                <%= data[i].textArea %> <br>
+                <br>
+            </td>
+        </tr>
+        <% } %>
+    </table>
+
+
+
+</body>
+
+</html>
