@@ -21,8 +21,7 @@ router.post("/post", (req, res) => {
         name: user.name,
         title: req.body.title,
         textArea: req.body.textArea,
-        id: user.id,
-        likes: []
+        id: user.id
       });
       // user._id = user.id;
       newPost
@@ -62,7 +61,7 @@ router.get("/showAll", (req, res) => {
 
 // @type -- GET
 // @route -- /api/posts/:name
-// @desc -- Route for Getting the profile based on username
+// @desc -- Route for Getting the Posts by an user.
 // @access -- PUBLIC
 
 router.get("/:name", (req, res) => {
@@ -97,11 +96,12 @@ router.get("/:name", (req, res) => {
 });
 
 // @type -- POST
-// @route -- /api/posts/
+// @route -- /api/posts/likePost/:id
 // @desc -- Route for Liking a Post
 // @access -- PRIVATE
 
 router.post("/likePost/:id", (req, res) => {
+  var flag = 0;
   jsonwt.verify(req.cookies.auth_t, key.secret, (err, user) => {
     if (user) {
       const id = req.params.id;
@@ -110,11 +110,30 @@ router.post("/likePost/:id", (req, res) => {
           Post.findById(id)
             .then(post => {
               if (post) {
-                post.likes.unshift({ id: user.id });
-                post
-                  .save()
-                  .then(res.status(200).json({ saved: "Post Liked!" }))
-                  .catch(err => console.log(err));
+                // Check if the Post is already liked..
+                for (t = 0; t < post.likes.length; t++) {
+                  if (post.likes[t].id === user.id) {
+                    post.likes.shift();
+                    post.save();
+                    flag = 1;
+                    break;
+                  } else {
+                    continue;
+                  }
+                }
+                if (flag) {
+                  flag = 0;
+                  return res.render("postInfo", { liked: 0 });
+                  // return res.status(200).json({ unliked: "Post Unliked!" });
+                } else {
+                  post.likes.unshift(user.id);
+                  post
+                    .save()
+                    .then(res.render("postInfo", { liked: 1 }))
+                    .catch(err => console.log(err));
+                }
+              } else {
+                res.status(400).json({ noAccess: "Post not found" });
               }
             })
             .catch(err => console.log(err))

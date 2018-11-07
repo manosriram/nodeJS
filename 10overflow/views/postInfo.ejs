@@ -9,7 +9,7 @@
 </head>
 
 <body>
-    <% if (isLoggedIn == 0) { %>
+    <% if (!isLoggedIn) { %>
     <h3>
         User :
         <%= user.name %>
@@ -45,7 +45,7 @@
     </table>
     <% } %>
 
-    <% if (isLoggedIn == 1) { %>
+    <% if (isLoggedIn) { %>
     <h3>
         User :
         <%= user.name %>
@@ -69,13 +69,13 @@
                 Title :
                 <%= data[i].title %>
             </td>
-            <%=userData.id %>
+            <%=data.id %>
             <td>
                 Post :
                 <%= data[i].textArea %> <br>
                 <br>
             </td>
-            <form action="/api/posts/likePost/<%=userData.id%>" method="POST">
+            <form action="/api/posts/likePost/<%=data[i]._id%>" method="POST">
                 <input type="submit" value="Like">
             </form>
         </tr>
