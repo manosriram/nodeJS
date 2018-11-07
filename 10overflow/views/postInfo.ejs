@@ -9,6 +9,7 @@
 </head>
 
 <body>
+    <% if (isLoggedIn == 0) { %>
     <h3>
         User :
         <%= user.name %>
@@ -42,6 +43,49 @@
         </tr>
         <% } %>
     </table>
+    <% } %>
+
+    <% if (isLoggedIn == 1) { %>
+    <h3>
+        User :
+        <%= user.name %>
+    </h3>
+    <h3>
+        Email :
+        <%= user.email %>
+    </h3>
+    <h3>-------------------------------------------------------------------------------------------------------------------</h3>
+    <h4>All Posts : </h4>
+    <table>
+        <% for(var i=0; i < data.length; i++) { %>
+
+
+        <tr>
+
+            <td>
+                <h3>Post
+                    <%= i+1 %> :
+                </h3>
+                Title :
+                <%= data[i].title %>
+            </td>
+            <%=userData.id %>
+            <td>
+                Post :
+                <%= data[i].textArea %> <br>
+                <br>
+            </td>
+            <form action="/api/posts/likePost/<%=userData.id%>" method="POST">
+                <input type="submit" value="Like">
+            </form>
+        </tr>
+
+        <% } %>
+    </table>
+
+    <% } %>
+
+
 
 
 

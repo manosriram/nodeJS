@@ -18,11 +18,13 @@ router.post("/post", (req, res) => {
   jsonwt.verify(req.cookies.auth_t, key.secret, (err, user) => {
     if (user) {
       const newPost = new Post({
+        name: user.name,
         title: req.body.title,
         textArea: req.body.textArea,
-        id: user.id
+        id: user.id,
+        likes: []
       });
-      user._id = user.id;
+      // user._id = user.id;
       newPost
         .save()
         .then(post => {
@@ -64,19 +66,64 @@ router.get("/showAll", (req, res) => {
 // @access -- PUBLIC
 
 router.get("/:name", (req, res) => {
-  Person.findOne({ name: req.params.name })
-    .then(person => {
-      if (!person) {
-        res.status(404).json({ notFound: "User not found with this name.." });
-      } else {
-        Post.find({ id: person.id })
-          .then(post => {
-            res.render("postInfo", { data: post, user: person });
-          })
-          .catch(err => console.log(err));
-      }
-    })
-    .catch(err => console.log(err));
+  jsonwt.verify(req.cookies.auth_t, key.secret, (err, user) => {
+    Person.findOne({ name: req.params.name })
+      .then(person => {
+        if (!person) {
+          res.status(404).json({ notFound: "User not found with this name.." });
+        } else {
+          Post.find({ id: person.id })
+            .then(post => {
+              if (user) {
+                res.render("postInfo", {
+                  data: post,
+                  user: person,
+                  isLoggedIn: 1,
+                  userData: user
+                });
+              } else {
+                res.render("postInfo", {
+                  data: post,
+                  user: person,
+                  isLoggedIn: 0
+                });
+              }
+            })
+            .catch(err => console.log(err));
+        }
+      })
+      .catch(err => console.log(err));
+  });
+});
+
+// @type -- POST
+// @route -- /api/posts/
+// @desc -- Route for Liking a Post
+// @access -- PRIVATE
+
+router.post("/likePost/:id", (req, res) => {
+  jsonwt.verify(req.cookies.auth_t, key.secret, (err, user) => {
+    if (user) {
+      const id = req.params.id;
+      Person.findById(user.id)
+        .then(
+          Post.findById(id)
+            .then(post => {
+              if (post) {
+                post.likes.unshift({ id: user.id });
+                post
+                  .save()
+                  .then(res.status(200).json({ saved: "Post Liked!" }))
+                  .catch(err => console.log(err));
+              }
+            })
+            .catch(err => console.log(err))
+        )
+        .catch(err => console.log(err));
+    } else {
+      res.status(403).json({ failed: "Please Login to Like Posts.." });
+    }
+  });
 });
 
 module.exports = router;

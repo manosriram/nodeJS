@@ -41,19 +41,4 @@ router.get("/info", (req, res) => {
   });
 });
 
-// @type -- POST
-// @route -- /api/profile/post
-// @desc -- Route for Posting a Feed Item
-// @access -- Private
-
-router.post("/post", (req, res) => {
-  jsonwt.verify(req.cookies.auth_t, key.secret, (err, user) => {
-    if (user) {
-      post = req.body.postArea;
-
-      res.status(200).render("post", { data: post });
-    }
-  });
-});
-
 module.exports = router;
