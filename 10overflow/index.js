@@ -13,6 +13,7 @@ const key = require("./setup/myurl").secret;
 const auth = require("./routes/api/auth");
 const profile = require("./routes/api/profile");
 const posts = require("./routes/api/posts");
+const homePage = require("./routes/api/homepage");
 
 app.set("view engine", "ejs");
 app.use(cookieParser());
@@ -53,7 +54,7 @@ app.use(bodyparser.json());
 
 // Test home route.
 app.get("/", (req, res) => {
-  res.send("Hello, World!  ");
+  res.send("Homepage!!");
 });
 
 passport.serializeUser(function(user, done) {
@@ -71,6 +72,7 @@ passport.deserializeUser(function(id, done) {
 app.use("/api/auth", auth);
 app.use("/api/profile", profile);
 app.use("/api/posts", posts);
+app.use("/home", homePage);
 
 app.listen(port, () => {
   console.log(`Server running at Port ${port}`);

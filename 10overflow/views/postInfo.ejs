@@ -18,6 +18,10 @@
         Email :
         <%= user.email %>
     </h3>
+    <h1>
+        id :
+        <%= user._id %>
+    </h1>
     <h3>-------------------------------------------------------------------------------------------------------------------</h3>
     <h4>All Posts : </h4>
     <table>
@@ -46,6 +50,13 @@
     <% } %>
 
     <% if (isLoggedIn) { %>
+    <h1>
+        id :
+        <%= user._id %>
+    </h1>
+    <form action="/api/posts/follow/<%=user._id%>" method="POST">
+        <input type="submit" value="follow">
+    </form>
     <h3>
         User :
         <%= user.name %>
@@ -79,6 +90,7 @@
                 <input type="submit" value="Like">
                 <% } %>
             </form>
+
         </tr>
 
         <% } %>
