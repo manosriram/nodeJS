@@ -29,7 +29,15 @@ const PersonSchema = new Schema({
   token: {
     type: String,
     default: undefined
-  }
+  },
+  follows: [
+    {
+      user: {
+        type: Schema.Types.ObjectId,
+        ref: "myPerson"
+      }
+    }
+  ]
 });
 
 module.exports = Person = mongoose.model("myPerson", PersonSchema);

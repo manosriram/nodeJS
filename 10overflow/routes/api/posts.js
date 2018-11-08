@@ -101,8 +101,8 @@ router.get("/:name", (req, res) => {
 // @access -- PRIVATE
 
 router.post("/likePost/:id", (req, res) => {
-  var flag = 0;
   jsonwt.verify(req.cookies.auth_t, key.secret, (err, user) => {
+    var flag;
     if (user) {
       const id = req.params.id;
       Person.findById(user.id)
@@ -118,18 +118,20 @@ router.post("/likePost/:id", (req, res) => {
                     flag = 1;
                     break;
                   } else {
+                    flag = 0;
                     continue;
                   }
                 }
                 if (flag) {
                   flag = 0;
-                  return res.render("postInfo", { liked: 0 });
+                  return res.status(200).json({ unliked: "Post Unliked!" });
+                  // return res.render("postInfo", { liked: 0 });
                   // return res.status(200).json({ unliked: "Post Unliked!" });
                 } else {
                   post.likes.unshift(user.id);
                   post
                     .save()
-                    .then(res.render("postInfo", { liked: 1 }))
+                    .then(res.status(200).json({ liked: "Post Liked!" }))
                     .catch(err => console.log(err));
                 }
               } else {
@@ -141,6 +143,52 @@ router.post("/likePost/:id", (req, res) => {
         .catch(err => console.log(err));
     } else {
       res.status(403).json({ failed: "Please Login to Like Posts.." });
+    }
+  });
+});
+
+// @type -- POST
+// @route -- /api/posts/follow/:id
+// @desc -- Route for following a person
+// @access -- PRIVATE
+
+router.post("/follow/:id", (req, res) => {
+  jsonwt.verify(req.cookies.auth_t, key.secret, (err, user) => {
+    var flag = 0;
+    if (user) {
+      const id = req.params.id;
+      Person.findById(user.id)
+        .then(person => {
+          if (person) {
+            for (t = 0; t < person.follows.length; t++) {
+              if (person.follows[t].id === id) {
+                person.follows.shift();
+                person.save();
+                flag = 1;
+                break;
+              } else {
+                flag = 0;
+                continue;
+              }
+            }
+
+            if (flag) {
+              flag = 0;
+              return res
+                .status(200)
+                .json({ unfollowed: "Person Unfollowed.." });
+            } else {
+              person.follows.unshift(id);
+              person
+                .save()
+                .then(res.status(200).json({ followed: "Person Followed." }))
+                .catch(err => console.log(err));
+            }
+          } else {
+            res.status(404).json({ notFound: "Person not found.." });
+          }
+        })
+        .catch(err => console.log(err));
     }
   });
 });

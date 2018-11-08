@@ -26,13 +26,7 @@ router.get("/post", (req, res) => {
 router.get("/info", (req, res) => {
   jsonwt.verify(req.cookies.auth_t, key.secret, (err, user) => {
     if (user) {
-      data = {
-        email: user.email,
-        name: user.name,
-        username: user.username,
-        token: user.token
-      };
-      res.render("profile", { data: data });
+      res.render("profile", { data: user });
     } else {
       res
         .status(400)
