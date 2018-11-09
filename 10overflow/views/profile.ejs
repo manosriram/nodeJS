@@ -1,28 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+      integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+      crossorigin="anonymous"
+    />
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Document</title>
-</head>
+  </head>
 
-<body>
-
-    <h3>
-        Name :
-        <%= data.name %>
-    </h3>
-    <h3>Email :
-        <%= data.email %>
-    </h3>
-    <h3>
-        UserName :
-        <%= data.username %>
-    </h3>
-
-
-</body>
-
+  <body>
+    <h1><%= data.name %>'s Posts ...</h1>
+    <br />
+    <div class="jumbotron">
+      <div class="container">
+        <h3>Name : <%= data.name %></h3>
+        <h3>Email : <%= data.email %></h3>
+        <% if (data.username) { %>
+        <h3>UserName : <%= data.username %></h3>
+        <br />
+        <% } for(var i=0; i < post.length; i++) { if (post[i].title) { %>
+        <h1>Post <%=i+1 %></h1>
+        <h3>Title : <%= post[i].title %></h3>
+        <% } %> <% if (post[i].textArea) { %>
+        <h3>Data : <%= post[i].textArea %></h3>
+        <% } %> <br /><br />
+        <% } %>
+      </div>
+    </div>
+  </body>
 </html>

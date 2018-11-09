@@ -27,9 +27,11 @@ router.post("/post", (req, res) => {
       newPost
         .save()
         .then(post => {
-          res.json({ success: "Post Submitted!", id: user.id });
+          res.render("post", { user: user });
         })
         .catch(err => console.log(err));
+    } else {
+      res.status(403).json({ login: "Please login to post stuff" });
     }
   });
 });
