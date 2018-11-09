@@ -68,6 +68,7 @@ router.get("/showAll", (req, res) => {
 
 router.get("/:name", (req, res) => {
   jsonwt.verify(req.cookies.auth_t, key.secret, (err, user) => {
+    const name = req.params.name;
     Person.findOne({ name: req.params.name })
       .then(person => {
         if (!person) {
@@ -80,13 +81,15 @@ router.get("/:name", (req, res) => {
                   data: post,
                   user: person,
                   isLoggedIn: 1,
-                  userData: user
+                  userData: user,
+                  name: name
                 });
               } else {
                 res.render("postInfo", {
                   data: post,
                   user: person,
-                  isLoggedIn: 0
+                  isLoggedIn: 0,
+                  name: name
                 });
               }
             })

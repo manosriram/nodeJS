@@ -97,13 +97,10 @@ router.post("/login", (req, res) => {
               jsonwt.sign(
                 payload,
                 key.secret,
-                { expiresIn: 604800000 },
+                { expiresIn: "12h" },
                 (err, token) => {
-                  res.cookie("auth_t", token, { maxAge: 900000 });
-                  res.json({
-                    success: true,
-                    token: "Bearer " + token
-                  });
+                  res.render("login");
+                  res.cookie("auth_t", token, { maxAge: "12h" });
                 }
               );
             } else {

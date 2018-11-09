@@ -6,7 +6,6 @@ const key = require("../../setup/myurl");
 // router.get("/", (req, res) => {
 //   res.render("post");
 // });
-
 router.get("/", (req, res) => {
   jsonwt.verify(req.cookies.auth_t, key.secret, (err, user) => {
     if (user) {
