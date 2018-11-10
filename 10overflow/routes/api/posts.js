@@ -198,4 +198,27 @@ router.post("/follow/:id", (req, res) => {
   });
 });
 
+// @type -- POST
+// @desc -- Route for Searching a person's profile..
+// @access -- PUBLIC
+
+router.post("/getUser", (req, res) => {
+  const name = req.body.name;
+
+  Person.findOne({ name: name })
+    .then(person => {
+      if (!person) {
+        res.redirect("/home");
+        // res.redirect("/home");
+      } else {
+        Post.find({ id: person.id })
+          .then(post => {
+            res.render("profile", { data: person, post: post });
+          })
+          .catch(err => console.log(err));
+      }
+    })
+    .catch(err => console.log(err));
+});
+
 module.exports = router;

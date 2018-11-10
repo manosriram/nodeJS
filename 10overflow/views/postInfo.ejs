@@ -1,107 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Document</title>
-</head>
+  </head>
 
-<body>
+  <body>
     <% if (!isLoggedIn) { %>
+    <h3>User : <%= user.name %></h3>
+    <h3>Email : <%= user.email %></h3>
+    <h1>id : <%= user._id %></h1>
     <h3>
-        User :
-        <%= user.name %>
+      -------------------------------------------------------------------------------------------------------------------
     </h3>
-    <h3>
-        Email :
-        <%= user.email %>
-    </h3>
-    <h1>
-        id :
-        <%= user._id %>
-    </h1>
-    <h3>-------------------------------------------------------------------------------------------------------------------</h3>
-    <h4>All Posts : </h4>
+    <h4>All Posts :</h4>
     <table>
-        <% for(var i=0; i < data.length; i++) { %>
+      <% for(var i=0; i < data.length; i++) { %>
 
-
-        <tr>
-
-            <td>
-                <h3>Post
-                    <%= i+1 %> :
-                </h3>
-                Title :
-                <%= data[i].title %>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                Post :
-                <%= data[i].textArea %> <br>
-                <br>
-            </td>
-        </tr>
-        <% } %>
+      <tr>
+        <td>
+          <h3>Post <%= i+1 %> :</h3>
+          Title : <%= data[i].title %>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          Post : <%= data[i].textArea %> <br />
+          <br />
+        </td>
+      </tr>
+      <% } %>
     </table>
-    <% } %>
 
-    <% if (isLoggedIn) { %>
-    <h1>
-        id :
-        <%= user._id %>
-    </h1>
+    <% } %> <% if (isLoggedIn) { %>
+    <h1>id : <%= user._id %></h1>
     <form action="/api/posts/follow/<%=user._id%>" method="POST">
-        <input type="submit" value="follow">
+      <input type="submit" value="follow" />
     </form>
+    <h3>User : <%= user.name %></h3>
+    <h3>Email : <%= user.email %></h3>
     <h3>
-        User :
-        <%= user.name %>
+      -------------------------------------------------------------------------------------------------------------------
     </h3>
-    <h3>
-        Email :
-        <%= user.email %>
-    </h3>
-    <h3>-------------------------------------------------------------------------------------------------------------------</h3>
-    <h4>All Posts : </h4>
+    <h4>All Posts :</h4>
     <table>
-        <% for(var i=0; i < data.length; i++) { %>
+      <% for(var i=0; i < data.length; i++) { %>
 
+      <tr>
+        <td>
+          <h3>Post <%= i+1 %> :</h3>
+          Title : <%= data[i].title %>
+        </td>
+        <%=data.id %>
+        <td>
+          Post : <%= data[i].textArea %> <br />
+          <br />
+          <form action="/api/posts/likePost/<%=data[i]._id%>" method="POST">
+            <input type="submit" value="Like" />
+          </form>
+        </td>
+      </tr>
 
-        <tr>
-
-            <td>
-                <h3>Post
-                    <%= i+1 %> :
-                </h3>
-                Title :
-                <%= data[i].title %>
-            </td>
-            <%=data.id %>
-            <td>
-                Post :
-                <%= data[i].textArea %> <br>
-                <br>
-            </td>
-            <form action="/api/posts/likePost/<%=data[i]._id%>" method="POST">
-                <input type="submit" value="Like">
-                <% } %>
-            </form>
-
-        </tr>
-
-        <% } %>
+      <% } %>
     </table>
 
     <% } %>
-
-
-
-
-
-</body>
-
+    <h3><a href="/home">Home</a></h3>
+  </body>
 </html>

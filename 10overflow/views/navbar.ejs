@@ -45,7 +45,7 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
           <li class="nav-item active">
-            <a class="nav-link" href="#"
+            <a class="nav-link" href="/api/auth/login"
               >Login <span class="sr-only">(current)</span></a
             >
           </li>
@@ -53,25 +53,25 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item active">
-                    <a class="nav-link" href="#">Register <span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="/api/auth/register">Register <span class="sr-only">(current)</span></a>
                 </li>
             </ul>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+              <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                  <a class="nav-link" href="/api/auth/logout">Logout <span class="sr-only">(current)</span></a>
+                </li>
+              </ul>
 
-            <form id="searchName" class="form-inline my-2 my-lg-0" action=""  method="POST">
+            <form id="searchName" class="form-inline my-2 my-lg-0" action="/api/posts/getUser"  method="POST">
                 <input
                 class="form-control mr-sm-2"
                 type="search"
-                placeholder="Search"
+                placeholder="Search User..."
                 aria-label="Search"
+                name="name"
                 />
-                                <script>
-
-                                  
-
-
-                                </script>
-          <button class="btn btn-outline-success my-2 my-sm-0" type="submit" onclick="getV()">
-            Search
+         <input type="submit" id="btn" class="btn btn-outline-success my-2 my-sm-0" value="Search" >
           </button>
         </form>
       </div>

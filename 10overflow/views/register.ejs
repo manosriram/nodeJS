@@ -33,8 +33,9 @@
     }
   </style>
   <body>
-    <h1>Get Started.</h1>
+    <%- include navbar.ejs %>
     <div class="jumbotron">
+      <h4>Get Started.</h4>
       <div class="container">
         <form action="/api/auth/register" method="POST">
           <input type="email" name="email" placeholder="Email" /> <br />

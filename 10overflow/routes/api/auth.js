@@ -97,10 +97,11 @@ router.post("/login", (req, res) => {
               jsonwt.sign(
                 payload,
                 key.secret,
-                { expiresIn: "12h" },
+                { expiresIn: 9000000 },
                 (err, token) => {
-                  res.render("login");
-                  res.cookie("auth_t", token, { maxAge: "12h" });
+                  res.cookie("auth_t", token, { maxAge: 90000000 });
+                  res.redirect("/home");
+                  // res.json({ token: token });
                 }
               );
             } else {
@@ -123,7 +124,7 @@ router.get("/logout", (req, res) => {
     if (user) {
       res.clearCookie("auth_t");
       req.logout();
-      res.status(200).redirect("/api/auth/login");
+      res.status(200).redirect("/home");
     } else {
       res.status(403).json({ noUser: "Access Forbidden" });
     }
