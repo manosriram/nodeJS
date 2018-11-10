@@ -47,6 +47,8 @@ router.get("/info", (req, res) => {
       Post.find({ id: user.id })
         .then(post => res.render("profile", { data: user, post: post }))
         .catch(err => console.log(err));
+    } else {
+      res.status(403).redirect("/home");
     }
   });
 });

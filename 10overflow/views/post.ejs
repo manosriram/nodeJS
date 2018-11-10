@@ -54,12 +54,13 @@
         <form action="/api/posts/post" method="POST">
           <input type="text" name="title" id="title" placeholder="Title" />
           <br /><br />
-          <input
-            type="text"
+          <textarea
             name="textArea"
             id="tArea"
-            placeholder="Post Details"
-          />
+            cols="30"
+            rows="40"
+            placeholder="Update Status"
+          ></textarea>
           <br /><br />
           <input type="submit" class="btn btn-primary" value="Post" />
         </form>
