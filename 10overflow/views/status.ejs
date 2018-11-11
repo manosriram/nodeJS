@@ -68,7 +68,15 @@
     </div>
 
     <div class="jumbotron">
-      <div class="container"><h5><%= post %></h5></div>
+      <div class="container">
+        <% for (var i=0;i<post.length;i++) { %>
+          <h3>Name : <%= post[i].author %></h3>
+          <br><br>
+          <h3>Title : <%= post[i].title %></h3>
+          <h2>Post : <%= post[i].textArea %></h2>
+          <br><br>
+          <% } %>
+      </div>
     </div>
 
     <% } else { %>

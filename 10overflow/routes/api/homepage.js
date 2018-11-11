@@ -29,9 +29,7 @@ router.get("/postTest", (req, res) => {
         });
       });
     } else {
-      res
-        .status(403)
-        .json({ noAccess: "Please Login to Get regular Status Updates!" });
+      res.status(403).json({ noAccess: "Please Login to Get Status Updates!" });
     }
   });
 });
