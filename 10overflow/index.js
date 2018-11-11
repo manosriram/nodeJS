@@ -8,6 +8,7 @@ const passport = require("passport");
 const cookieParser = require("cookie-parser");
 const app = express();
 const key = require("./setup/myurl").secret;
+const jsonwt = require("jsonwebtoken");
 
 // Importing all Routes
 const auth = require("./routes/api/auth");
@@ -54,7 +55,9 @@ app.use(bodyparser.json());
 
 // Test home route.
 app.get("/", (req, res) => {
-  res.send("Homepage!!");
+  jsonwt.verify(req.cookies.auth_t, key, (err, user) => {
+    res.redirect("/home");
+  });
 });
 
 passport.serializeUser(function(user, done) {

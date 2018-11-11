@@ -7,8 +7,7 @@ const PostSchema = new Schema({
     required: false
   },
   textArea: {
-    type: String,
-    required: true
+    type: String
   },
   likes: [
     {

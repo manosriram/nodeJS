@@ -8,7 +8,7 @@
   </head>
 
   <body>
-    <% if (!isLoggedIn) { %>
+    <%- include navbar.ejs %> <% if (!isLoggedIn) { %>
     <h3>User : <%= user.name %></h3>
     <h3>Email : <%= user.email %></h3>
     <h1>id : <%= user._id %></h1>
@@ -35,14 +35,19 @@
     </table>
 
     <% } %> <% if (isLoggedIn) { %>
+
     <h1>id : <%= user._id %></h1>
-    <form action="/api/posts/follow/<%=user._id%>" method="POST">
-      <input type="submit" value="follow" />
+
+   
+<div class="jumbotron">
+  <div class="container">
+ 
+    <h3>User : <%= user.name %></h3><form action="/api/posts/follow/<%=user._id%>" method="POST">
+      <input id="follow" class="btn btn-success" type="submit" value="follow" />
     </form>
-    <h3>User : <%= user.name %></h3>
-    <h3>Email : <%= user.email %></h3>
+    <h3>Email : <%= user.email %></h3> 
     <h3>
-      -------------------------------------------------------------------------------------------------------------------
+      -----------------------------------------------------------------------------------------
     </h3>
     <h4>All Posts :</h4>
     <table>
@@ -58,15 +63,31 @@
           Post : <%= data[i].textArea %> <br />
           <br />
           <form action="/api/posts/likePost/<%=data[i]._id%>" method="POST">
-            <input type="submit" value="Like" />
+           
+            <input
+              onclick="change()"
+              id="like"
+              type="submit"
+              value="Like"
+              class="btn btn-primary"
+            />
+          <script>
+            function change() {
+          var elem = document.getElementById("like");
+          if (elem.value == "Like") elem.value = "Unlike";
+          else elem.value = "Like";
+            }
+          </script>
           </form>
+            <h3>Likes : <%=data[i].likes.length %></h3>
         </td>
       </tr>
-
+  </div>
+  </div>
       <% } %>
     </table>
 
     <% } %>
-    <h3><a href="/home">Home</a></h3>
+    <h3><a href="/home" class="btn btn-danger">Home</a></h3>
   </body>
 </html>

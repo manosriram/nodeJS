@@ -23,11 +23,10 @@ router.post("/post", (req, res) => {
         textArea: req.body.textArea,
         id: user.id
       });
-      // user._id = user.id;
       newPost
         .save()
         .then(post => {
-          res.render("post", { user: user });
+          res.render("post", { user: user, post: newPost });
         })
         .catch(err => console.log(err));
     } else {
@@ -43,7 +42,7 @@ router.post("/post", (req, res) => {
 router.get("/post", (req, res) => {
   jsonwt.verify(req.cookies.auth_t, key.secret, (err, user) => {
     if (user) {
-      res.render("post");
+      res.render("post", { user: user, post: post });
     } else {
       res.status(403).json({ noAccess: "Please Login To Post.." });
     }
@@ -74,6 +73,16 @@ router.get("/:name", (req, res) => {
         if (!person) {
           res.status(404).json({ notFound: "User not found with this name.." });
         } else {
+          var following = 0;
+          for (t = 0; t < person.follows.length; t++) {
+            if (person.follows[t].id === user.id) {
+              following = 1;
+              break;
+            } else {
+              following = 0;
+              continue;
+            }
+          }
           Post.find({ id: person.id })
             .then(post => {
               if (user) {
@@ -82,7 +91,8 @@ router.get("/:name", (req, res) => {
                   user: person,
                   isLoggedIn: 1,
                   userData: user,
-                  name: name
+                  name: name,
+                  following: following
                 });
               } else {
                 res.render("postInfo", {
@@ -110,8 +120,9 @@ router.post("/likePost/:id", (req, res) => {
     var flag;
     if (user) {
       const id = req.params.id;
+
       Person.findById(user.id)
-        .then(
+        .then(person =>
           Post.findById(id)
             .then(post => {
               if (post) {
@@ -129,15 +140,14 @@ router.post("/likePost/:id", (req, res) => {
                 }
                 if (flag) {
                   flag = 0;
-                  return res.status(200).json({ unliked: "Post Unliked!" });
-                  // return res.render("postInfo", { liked: 0 });
-                  // return res.status(200).json({ unliked: "Post Unliked!" });
+                  return res.status(200).redirect("back");
                 } else {
                   post.likes.unshift(user.id);
-                  post
-                    .save()
-                    .then(res.status(200).json({ liked: "Post Liked!" }))
-                    .catch(err => console.log(err));
+
+                  post.save().then(res.status(200).redirect("back"));
+
+                  // .then(res.status(200).json({ liked: "Post Liked!" }))
+                  // .catch(err => console.log(err));
                 }
               } else {
                 res.status(400).json({ noAccess: "Post not found" });
@@ -206,4 +216,25 @@ router.post("/getUser", (req, res) => {
   const name = req.body.name;
   res.redirect("/api/posts/" + name);
 });
+
+// @type -- GET
+// @route -- /api/posts/:id
+// @desc -- Route for Getting Profile Information of the User based on ID
+// @access -- Public
+
+router.get("/:id", (req, res) => {
+  jsonwt.verify(req.cookies.auth_t, key.secret, (err, user) => {
+    if (user) {
+      const id = req.params.id;
+      Person.findById(id)
+        .then(person => {
+          Post.findById(person.id)
+            .then(res.render("post", { user: user }))
+            .catch(err => console.log(err));
+        })
+        .catch(err => console.log(err));
+    }
+  });
+});
+
 module.exports = router;

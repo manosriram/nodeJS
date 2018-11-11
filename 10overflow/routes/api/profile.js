@@ -20,23 +20,6 @@ router.get("/post", (req, res) => {
 });
 
 // @type -- GET
-// @route -- /api/auth/profile
-// @desc -- Route for Getting Profile Information of the Logged in User.
-// @access -- Private
-
-// router.get("/info", (req, res) => {
-//   jsonwt.verify(req.cookies.auth_t, key.secret, (err, user) => {
-//     if (user) {
-// res.render("profile", { data: user });
-//     } else {
-//       res
-//         .status(400)
-//         .json({ sessionOut: "Session Timeout!!Please Login Again" });
-//     }
-//   });
-// });
-
-// @type -- GET
 // @route -- /api/auth/profile/info
 // @desc -- Route for Getting Profile Information of the Logged in User.
 // @access -- Private
