@@ -18,7 +18,7 @@ router.post("/post", (req, res) => {
   jsonwt.verify(req.cookies.auth_t, key.secret, (err, user) => {
     if (user) {
       const newPost = new Post({
-        name: user.name,
+        author: user.name,
         title: req.body.title,
         textArea: req.body.textArea,
         id: user.id
@@ -62,7 +62,7 @@ router.get("/showAll", (req, res) => {
 
 // @type -- GET
 // @route -- /api/posts/:name
-// @desc -- Route for Getting the Posts by an user.
+// @desc -- Route for Getting the Posts by an user based on his name..
 // @access -- PUBLIC
 
 router.get("/:name", (req, res) => {
@@ -222,7 +222,11 @@ router.post("/getUser", (req, res) => {
 // @desc -- Route for Getting Profile Information of the User based on ID
 // @access -- Public
 
+<<<<<<< HEAD
 router.get("/user/:id", (req, res) => {
+=======
+router.get("/id/:id", (req, res) => {
+>>>>>>> 2587496de50c819a98c7148add8cdf56b03be8b0
   jsonwt.verify(req.cookies.auth_t, key.secret, (err, user) => {
     if (user) {
       const id = req.params.id;
@@ -233,6 +237,40 @@ router.get("/user/:id", (req, res) => {
             .catch(err => console.log(err));
         })
         .catch(err => console.log(err));
+    } else {
+      res.json({ notFound: "No User found with this ID" });
+    }
+  });
+});
+
+// @type -- POST
+// @route -- /api/posts/followers
+// @desc -- Route for Getting all the followers of the user..
+// @access -- PUBLIC
+
+router.post("/following", (req, res) => {
+  jsonwt.verify(req.cookies.auth_t, key.secret, (err, user) => {
+    if (user) {
+      var data = [];
+      var obj = {};
+      Person.findById(user.id)
+        .then(person => {
+          for (var t = 0; t < person.follows.length; t++) {
+            Person.findById(person.follows[t]._id)
+              .then(person2 => {
+                data.push(person2.name);
+              })
+              .catch(err => console.log(err));
+            // console.log(person);
+          }
+          obj.data = data;
+          res.render("follow", { data: obj.data });
+        })
+        .catch(err => console.log(err));
+    } else {
+      res
+        .status(403)
+        .json({ noAccess: "Please Login to see your information.." });
     }
   });
 });
