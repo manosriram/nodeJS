@@ -222,7 +222,7 @@ router.post("/getUser", (req, res) => {
 // @desc -- Route for Getting Profile Information of the User based on ID
 // @access -- Public
 
-router.get("/:id", (req, res) => {
+router.get("/user/:id", (req, res) => {
   jsonwt.verify(req.cookies.auth_t, key.secret, (err, user) => {
     if (user) {
       const id = req.params.id;
