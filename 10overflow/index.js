@@ -2,7 +2,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const bodyparser = require("body-parser");
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 27017;
 const session = require("express-session");
 const passport = require("passport");
 const cookieParser = require("cookie-parser");
@@ -18,6 +18,8 @@ const homePage = require("./routes/api/homepage");
 
 app.set("view engine", "ejs");
 app.use(cookieParser());
+
+mongoose.connect();
 
 app.use(
   session({
