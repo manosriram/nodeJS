@@ -244,29 +244,28 @@ router.get("/id/:id", (req, res) => {
 // @desc -- Route for Getting all the followers of the user..
 // @access -- PUBLIC
 
-router.post("/following", (req, res) => {
+router.get("/:name/following", (req, res) => {
   jsonwt.verify(req.cookies.auth_t, key.secret, (err, user) => {
     if (user) {
-      var data = [];
-      var obj = {};
-      Person.findById(user.id)
-        .then(person => {
-          for (var t = 0; t < person.follows.length; t++) {
-            Person.findById(person.follows[t]._id)
+      const data = [];
+      // console.log(user);
+      const name = req.params.name;
+      Person.findOne({ name: name })
+        .then(person1 => {
+          for (var t = 0; t < person1.follows.length; t++) {
+            // console.log(person1.follows[t].id);
+            Person.findById(person1.follows[t].id)
               .then(person2 => {
-                data.push(person2.name);
+                data[t] = person2.name;
+                console.log(data[t]);
               })
-              .catch(err => console.log(err));
-            // console.log(person);
+              .catch("Error fetching User..");
           }
-          obj.data = data;
-          res.render("follow", { data: obj.data });
+          res.render("follow", { data: data });
         })
         .catch(err => console.log(err));
     } else {
-      res
-        .status(403)
-        .json({ noAccess: "Please Login to see your information.." });
+      res.status(403).json({ noAccess: "Please Login.." });
     }
   });
 });

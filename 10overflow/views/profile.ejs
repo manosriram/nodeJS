@@ -21,10 +21,8 @@
       <div class="container">
         <h3>Name : <%= data.name %></h3>
         <h3>Email : <%= data.email %></h3>
-        <form action="/api/posts/following" method="POST">
-          <input type="submit" value="following" />
-        </form>
-        <% if (data.username) { %>
+        <a href="/api/posts/<%=data.name%>/following">Following</a> <% if
+        (data.username) { %>
         <h3>UserName : <%= data.username %></h3>
         <br />
         <% } for(var i=0; i < post.length; i++) { if (post[i].title) { %>
