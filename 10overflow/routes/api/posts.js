@@ -247,21 +247,22 @@ router.get("/id/:id", (req, res) => {
 router.get("/:name/following", (req, res) => {
   jsonwt.verify(req.cookies.auth_t, key.secret, (err, user) => {
     if (user) {
-      const data = [];
-      // console.log(user);
-      const name = req.params.name;
-      Person.findOne({ name: name })
-        .then(person1 => {
-          for (var t = 0; t < person1.follows.length; t++) {
-            // console.log(person1.follows[t].id);
-            Person.findById(person1.follows[t].id)
-              .then(person2 => {
-                data[t] = person2.name;
-                console.log(data[t]);
-              })
-              .catch("Error fetching User..");
+      Person.findById(user.id)
+        .then(person => {
+          if (person) {
+            for (t = 0; t < person.follows.length; t++) {
+              Person.findById(person.follows[t].id)
+                .then(person2 => {
+                  // person.follows.unshift(id);
+                  person2.followers.unshift(person2.name);
+                  person2
+                    .save()
+                    .then(result => console.log(result))
+                    .catch("Error in saving data..");
+                })
+                .catch(err => console.log(err));
+            }
           }
-          res.render("follow", { data: data });
         })
         .catch(err => console.log(err));
     } else {

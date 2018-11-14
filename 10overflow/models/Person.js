@@ -37,6 +37,14 @@ const PersonSchema = new Schema({
         ref: "myPerson"
       }
     }
+  ],
+  followers: [
+    {
+      user: {
+        type: Schema.Types.ObjectId,
+        ref: "myPerson"
+      }
+    }
   ]
 });
 
