@@ -40,9 +40,14 @@ const PersonSchema = new Schema({
   ],
   followers: [
     {
+<<<<<<< HEAD
       user: {
         type: Schema.Types.ObjectId,
         ref: "myPerson"
+=======
+      follow: {
+        type: String
+>>>>>>> 2e9c1b72046f9940f875e680d5a99208d724b2ca
       }
     }
   ]

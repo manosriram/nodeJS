@@ -65,7 +65,7 @@ router.get("/showAll", (req, res) => {
 // @desc -- Route for Getting the Posts by an user based on his name..
 // @access -- PUBLIC
 
-router.get("/:name", (req, res) => {
+router.get("/user/:name", (req, res) => {
   jsonwt.verify(req.cookies.auth_t, key.secret, (err, user) => {
     const name = req.params.name;
     Person.findOne({ name: req.params.name })
@@ -178,6 +178,10 @@ router.post("/follow/:id", (req, res) => {
             for (t = 0; t < person.follows.length; t++) {
               if (person.follows[t].id === id) {
                 person.follows.shift();
+                Person.findById(id).then(anotherPerson => {
+                  anotherPerson.followers.shift();
+                  anotherPerson.save();
+                });
                 person.save();
                 flag = 1;
                 break;
@@ -189,14 +193,18 @@ router.post("/follow/:id", (req, res) => {
 
             if (flag) {
               flag = 0;
-              return res
-                .status(200)
-                .json({ unfollowed: "Person Unfollowed.." });
+              return res.status(200).redirect("back");
             } else {
               person.follows.unshift(id);
+              Person.findById(id)
+                .then(anotherPerson => {
+                  anotherPerson.followers.unshift(user.name);
+                  anotherPerson.save();
+                })
+                .catch(err => console.log(err));
               person
                 .save()
-                .then(res.status(200).json({ followed: "Person Followed." }))
+                .then(res.status(200).redirect("back"))
                 .catch(err => console.log(err));
             }
           } else {
@@ -214,7 +222,7 @@ router.post("/follow/:id", (req, res) => {
 
 router.post("/getUser", (req, res) => {
   const name = req.body.name;
-  res.redirect("/api/posts/" + name);
+  res.redirect("/api/posts/user/" + name);
 });
 
 // @type -- GET
@@ -239,16 +247,45 @@ router.get("/id/:id", (req, res) => {
   });
 });
 
-// @type -- POST
-// @route -- /api/posts/followers
-// @desc -- Route for Getting all the followers of the user..
-// @access -- PUBLIC
+// // @type -- POST
+// // @route -- /api/posts/followers
+// // @desc -- Route for Getting all the followers of the user..
+// // @access -- PUBLIC
 
-router.get("/:name/following", (req, res) => {
+// router.get("/:name/following", (req, res) => {
+//   jsonwt.verify(req.cookies.auth_t, key.secret, (err, user) => {
+//     if (user) {
+//       const name = req.params.name;
+//       Person.findOne({ name: name })
+//         .then(person1 => {
+//           for (var t = 0; t < person1.follows.length; t++) {
+//             console.log(person1.follows[t].id);
+//             Person.findById(person1.follows[t].id)
+//               .then(person2 => {
+//                 person1.followers.unshift(person2.id);
+//                 person1
+//                   .save()
+//                   .then("Data Saved Successfully..")
+//                   .catch(err => console.log(err));
+//                 console.log(`Person 1 : ${person1.followers}`);
+//               })
+//               .catch("Error fetching User..");
+//           }
+//           res.render("follow", { person: person1 });
+//         })
+//         .catch(err => console.log(err));
+//     } else {
+//       res.status(403).json({ noAccess: "Please Login.." });
+//     }
+//   });
+// });
+
+router.get("/getUserData", (req, res) => {
   jsonwt.verify(req.cookies.auth_t, key.secret, (err, user) => {
     if (user) {
       Person.findById(user.id)
         .then(person => {
+<<<<<<< HEAD
           if (person) {
             for (t = 0; t < person.follows.length; t++) {
               Person.findById(person.follows[t].id)
@@ -263,10 +300,13 @@ router.get("/:name/following", (req, res) => {
                 .catch(err => console.log(err));
             }
           }
+=======
+          console.log(person.followers);
+>>>>>>> 2e9c1b72046f9940f875e680d5a99208d724b2ca
         })
         .catch(err => console.log(err));
     } else {
-      res.status(403).json({ noAccess: "Please Login.." });
+      res.send("Error in fetching User Data..");
     }
   });
 });
