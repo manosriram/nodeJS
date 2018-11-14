@@ -37,6 +37,13 @@ const PersonSchema = new Schema({
         ref: "myPerson"
       }
     }
+  ],
+  followers: [
+    {
+      follow: {
+        type: String
+      }
+    }
   ]
 });
 
