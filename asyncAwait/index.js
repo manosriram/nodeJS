@@ -1,29 +1,26 @@
-const express = require('express');
+const express = require("express");
 const app = express();
-
-const fetch = require('node-fetch');
+const fetch = require("node-fetch");
 
 const port = process.env.PORT || 5000;
 
+getD = async () => {
+  const resp = await fetch("https://jsonplaceholder.typicode.com/todos/3");
+  const json = await resp.json();
+  console.log(json);
+};
 
-async function getData() {
+getMovie = async () => {
+  const res = await fetch("http://www.omdbapi.com/?t=96&apikey=5d43c09e");
+  const json = await res.json();
+  console.log(json);
+};
 
-    const response = await fetch("https://api.github.com/users/octocat/orgs");
-    const json = await response.json();
-    return json;
-}
-
-
-//app.get("/userInfo", (req, res) => {
-  //  console.log(getData());
-// });
-
-
-app.get("/", (req, res) => {
-    getData().then(res => console.log(res));
-    res.send("Hey there!!");
+app.get("/getData", (req, res) => {
+  //   getD();
+  getMovie();
 });
 
 app.listen(port, () => {
-    console.log(`Server at ${port}`);
+  console.log(`Server at ${port}`);
 });

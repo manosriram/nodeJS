@@ -1,0 +1,1 @@
+Hi i am from the data.txt file inside the current directory!!
