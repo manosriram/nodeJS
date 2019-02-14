@@ -1,0 +1,16 @@
+{
+  "name": "asyncawait",
+  "version": "1.0.0",
+  "description": "",
+  "main": ".#one.js",
+  "scripts": {
+    "start": "node one.js"
+  },
+  "author": "Mano Sriram",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.4",
+    "node-fetch": "^2.3.0",
+    "nodemon": "^1.18.10"
+  }
+}
